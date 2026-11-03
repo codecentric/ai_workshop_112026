@@ -15,15 +15,7 @@ Vor Beginn der ersten Übung einmal gemeinsam prüfen:
 - [ ] Lokale HTML-Dateien können im Browser geöffnet werden.
 - [ ] `openspec --version` funktioniert; in Runde 4 stehen nach `openspec init` die `/opsx:...`-Commands bereit.
 
-## Arbeitsordner und Zusammenarbeit
-
-Jede Person bzw. jedes Paar verwendet über alle Runden hinweg einen eigenen,
-persistenten Arbeitsordner, zum Beispiel:
-
-```text
-participants/<name>/dev/       # Dev-Track: Code, Tests, AGENTS.md, story.md, openspec/
-participants/<name>/devops/    # DevOps-Track: Script, Tests, AGENTS.md, story.md, openspec/
-```
+## Zusammenarbeit
 
 Dev und DevOps bilden für Runde 1 und 2 feste Paare oder Kleingruppen. DevOps
 begleitet und reviewed den Stand des zugeordneten Dev-Partners. Falls dessen Stand
