@@ -1,0 +1,19 @@
+schema: spec-driven
+
+context: |
+  Healthcheck-Script (Node >= 20, CommonJS, keine Dependencies, kein Build), läuft in CI-Pipelines.
+  Logik und CLI in healthcheck.js, Seiteneffekte (fetch, Uhr, sleep, Ausgabe) werden als deps injiziert.
+  Tests mit `node --test`, Netzwerk nur gegen 127.0.0.1. Details stehen in AGENTS.md.
+
+rules:
+  specs:
+    - Jede Spec nennt Exit-Code und Ausgabekanal (stdout/stderr) des beschriebenen Verhaltens.
+  tasks:
+    - Vor jedem Feature-Task steht ein Test-Task, der zuerst fehlschlägt.
+
+operations:
+  apply:
+    guidance:
+      - Schreibe für jeden Task zuerst den Test (rot), dann die Implementierung (grün).
+      - Führe nach dem Test-Task `node --test` aus und zeige das Scheitern, bevor du implementierst.
+      - Keine Netzwerkzugriffe außerhalb von 127.0.0.1.

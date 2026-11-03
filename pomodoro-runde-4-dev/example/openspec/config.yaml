@@ -1,0 +1,16 @@
+schema: spec-driven
+
+context: |
+  Pomodoro Timer, Vanilla JS, läuft per Doppelklick (file://), keine Dependencies, kein Build.
+  Logik in timer.js (rein, ohne DOM und Date.now), UI in index.html, Tests mit `node --test`.
+  Details stehen in AGENTS.md.
+
+rules:
+  tasks:
+    - Vor jedem Feature-Task steht ein Test-Task, der zuerst fehlschlägt.
+
+operations:
+  apply:
+    guidance:
+      - Schreibe für jeden Task zuerst den Test (rot), dann die Implementierung (grün).
+      - Führe nach dem Test-Task `node --test` aus und zeige das Scheitern, bevor du implementierst.

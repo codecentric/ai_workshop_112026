@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pomodoro Timer</title>
+  <style>
+    body { font-family: system-ui, sans-serif; display: grid; place-items: center; min-height: 100vh; margin: 0; background: #1e1e2e; color: #eee; }
+    main { text-align: center; }
+    #mode { font-size: 1.2rem; letter-spacing: .1em; text-transform: uppercase; color: #f38ba8; }
+    body.break #mode { color: #a6e3a1; }
+    #display { font-size: 6rem; font-variant-numeric: tabular-nums; margin: .2em 0; }
+    #today { margin: 0 0 1em; color: #bac2de; }
+    button { font-size: 1.1rem; padding: .6em 1.2em; margin: 0 .3em; border: 0; border-radius: .4em; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="mode">Arbeit</div>
+    <div id="display" aria-live="off">25:00</div>
+    <div id="today">Heute: 0 Pomodoros</div>
+    <button id="toggle">Start</button>
+    <button id="reset">Reset</button>
+  </main>
+
+  <script src="timer.js"></script>
+  <script>
+    const LABELS = { work: 'Arbeit', break: 'Pause' };
+
+    const modeEl = document.getElementById('mode');
+    const displayEl = document.getElementById('display');
+    const toggleEl = document.getElementById('toggle');
+    const resetEl = document.getElementById('reset');
+    const todayEl = document.getElementById('today');
+
+    const STORAGE_KEY = 'pomodoro.history';
+
+    // Storage is optional (blocked, full, private mode): the timer must keep working.
+    function loadRaw() {
+      try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
+    }
+    function saveRaw(raw) {
+      try { localStorage.setItem(STORAGE_KEY, raw); } catch { /* count stays in memory only */ }
+    }
+
+    // Fallback when storage fails: keep counting for this page session.
+    let rawHistory = loadRaw();
+
+    let state = createState();
+    let intervalId = null;
+
+    function render() {
+      const text = format(state.remainingMs);
+      displayEl.textContent = text;
+      modeEl.textContent = LABELS[state.mode];
+      toggleEl.textContent = isRunning(state) ? 'Pause' : 'Start';
+      document.body.classList.toggle('break', state.mode === 'break');
+      document.title = `${text} · ${LABELS[state.mode]}`;
+      const n = readCount(rawHistory, dayKey(Date.now()));
+      todayEl.textContent = `Heute: ${n} ${n === 1 ? 'Pomodoro' : 'Pomodoros'}`;
+    }
+
+    function beep() {
+      try {
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        osc.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      } catch {
+        // Audio is optional; the title and display still signal the phase change.
+      }
+    }
+
+    function onTick() {
+      const result = tick(state, Date.now());
+      state = result.state;
+      if (result.phaseEnded) {
+        clearInterval(intervalId);
+        if (result.endedMode === 'work') {
+          rawHistory = addPomodoro(rawHistory, dayKey(Date.now()));
+          saveRaw(rawHistory);
+        }
+        beep();
+      }
+      render();
+    }
+
+    function onToggle() {
+      clearInterval(intervalId); // never more than one interval
+      if (isRunning(state)) {
+        state = pause(state, Date.now());
+      } else {
+        state = start(state, Date.now());
+        intervalId = setInterval(onTick, 250);
+      }
+      render();
+    }
+
+    function onReset() {
+      clearInterval(intervalId);
+      state = reset();
+      render();
+    }
+
+    toggleEl.addEventListener('click', onToggle);
+    resetEl.addEventListener('click', onReset);
+    render();
+  </script>
+</body>
+</html>

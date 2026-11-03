@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pomodoro Timer</title>
+  <style>
+    body { font-family: system-ui, sans-serif; display: grid; place-items: center; min-height: 100vh; margin: 0; background: #1e1e2e; color: #eee; }
+    main { text-align: center; }
+    #mode { font-size: 1.2rem; letter-spacing: .1em; text-transform: uppercase; color: #f38ba8; }
+    body.break #mode { color: #a6e3a1; }
+    #display { font-size: 6rem; font-variant-numeric: tabular-nums; margin: .2em 0; }
+    button { font-size: 1.1rem; padding: .6em 1.2em; margin: 0 .3em; border: 0; border-radius: .4em; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="mode">Arbeit</div>
+    <div id="display" aria-live="off">25:00</div>
+    <button id="toggle">Start</button>
+    <button id="reset">Reset</button>
+  </main>
+
+  <script>
+    const DURATIONS_MS = { work: 25 * 60 * 1000, break: 5 * 60 * 1000 };
+    const LABELS = { work: 'Arbeit', break: 'Pause' };
+
+    const modeEl = document.getElementById('mode');
+    const displayEl = document.getElementById('display');
+    const toggleEl = document.getElementById('toggle');
+    const resetEl = document.getElementById('reset');
+
+    let mode = 'work';
+    let remainingMs = DURATIONS_MS.work;
+    let endAt = null; // set while running; remaining time is derived from the wall clock
+    let intervalId = null;
+
+    function format(ms) {
+      const totalSeconds = Math.ceil(ms / 1000);
+      const m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const s = String(totalSeconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function render() {
+      const text = format(remainingMs);
+      displayEl.textContent = text;
+      modeEl.textContent = LABELS[mode];
+      toggleEl.textContent = endAt ? 'Pause' : 'Start';
+      document.body.classList.toggle('break', mode === 'break');
+      document.title = `${text} · ${LABELS[mode]}`;
+    }
+
+    function start() {
+      endAt = Date.now() + remainingMs;
+      intervalId = setInterval(tick, 250);
+      render();
+    }
+
+    function pause() {
+      remainingMs = Math.max(0, endAt - Date.now());
+      endAt = null;
+      clearInterval(intervalId);
+      render();
+    }
+
+    function reset() {
+      endAt = null;
+      clearInterval(intervalId);
+      mode = 'work';
+      remainingMs = DURATIONS_MS.work;
+      render();
+    }
+
+    function tick() {
+      remainingMs = Math.max(0, endAt - Date.now());
+      if (remainingMs === 0) {
+        beep();
+        // Switch phase and wait for the user to start the next one.
+        endAt = null;
+        clearInterval(intervalId);
+        mode = mode === 'work' ? 'break' : 'work';
+        remainingMs = DURATIONS_MS[mode];
+      }
+      render();
+    }
+
+    function beep() {
+      try {
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        osc.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      } catch {
+        // Audio is optional; the title and display still signal the phase change.
+      }
+    }
+
+    toggleEl.addEventListener('click', () => (endAt ? pause() : start()));
+    resetEl.addEventListener('click', reset);
+    render();
+  </script>
+</body>
+</html>
