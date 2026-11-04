@@ -1,31 +1,30 @@
 # Projekt
-Pomodoro Timer als Web-App: 25 min Arbeit, 5 min Pause, Start/Pause/Reset, Countdown als MM:SS.
-Lernprojekt im Workshop; Ziel ist kleiner, lesbarer, getesteter Code.
+Healthcheck-Script für Pipelines: prüft per HTTP-GET, ob eine Zielumgebung vor dem Deployment antwortet.
+Lernprojekt im Workshop; Ziel ist ein kleines, CI-taugliches, getestetes Script.
 
 # Tech-Stack
-- Vanilla JavaScript (ES2022), HTML, CSS. Keine Frameworks, keine Dependencies, kein Build-Schritt.
-- Läuft per Doppelklick auf `index.html` (file://). Deshalb keine ES-Module (`import`/`export`) im Browser-Code.
-- Tests mit dem eingebauten Node-Testrunner: `node --test` (Node >= 20). Kein Jest, kein npm.
+- Node.js >= 20, CommonJS, nur Standardbibliothek (`fetch`, `AbortSignal.timeout`, `node:test`). Keine Dependencies, kein npm, keine `package.json`, kein Build.
+- Tests: `node --test` (Exit-Code ungleich 0 bei Fehlern, damit CI es übernehmen kann).
 
 # Struktur
-- `timer.js`: reine Logik ohne DOM, ohne `Date.now()`, ohne Timer. Die Zeit wird als Parameter `now` übergeben.
-- `timer.test.js`: Tests für `timer.js`.
-- `index.html`: UI, Verdrahtung (`setInterval`, DOM, Ton, Tab-Titel). Enthält keine Geschäftslogik.
+- `healthcheck.js`: Logik und CLI in einer Datei. Netzwerk, Uhr, Warten und Ausgabe kommen als `deps` (`fetch`, `now`, `sleep`, `log`, `out`) in die Funktionen, damit Tests sie ersetzen können. Der CLI-Start steht unter `require.main === module`.
+- `healthcheck.test.js`: Unit-Tests mit Fake-`fetch` plus wenige Integrationstests gegen einen lokalen `node:http`-Server.
 
 # Konventionen
-- TDD: Für jede neue Funktion in `timer.js` zuerst einen fehlschlagenden Test schreiben, ausführen und das Scheitern zeigen, erst danach implementieren.
-- Restzeit immer aus Endzeitpunkt (`endAt - now`) berechnen, nie per `remaining--` dekrementieren (Drift, Hintergrund-Tabs).
-- Zustand ist ein einfaches Objekt `{ mode, remainingMs, endAt }`. Funktionen sind rein und geben neuen Zustand zurück.
-- Zeiten intern in Millisekunden, Konstanten in `UPPER_SNAKE_CASE`, Funktionen und Variablen in `camelCase`, DOM-Elemente mit Suffix `El`.
-- Ein `setInterval` zur Zeit. Vor jedem Start prüfen oder vorher `clearInterval`.
-- Fehler bei optionalen Features (Audio) fangen und ignorieren, der Timer läuft weiter. Kein `alert()`.
-- Kommentare auf Englisch, nur für das Warum. Benutzer-Texte in der UI auf Deutsch.
+- TDD: Zuerst ein fehlschlagender Test, Scheitern zeigen, dann implementieren.
+- Exit-Codes: 0 gesund, 1 ungesund, 2 falsche Bedienung. Nicht ändern ohne Rückfrage.
+- stdout enthält genau eine Ergebniszeile, Fortschritt und Usage gehen auf stderr.
+- URLs nie vollständig ausgeben, nur über `safeUrl` (keine Credentials, keine Query).
+- Kommentare auf Englisch, nur für das Warum. Meldungen für Nutzer auf Deutsch.
 
 # Was die KI nicht tun soll
-- Keine externen Libraries, kein npm, keine `package.json`, keine zusätzlichen Dateien ohne Rückfrage.
-- Keine globalen veränderlichen Variablen außerhalb von `index.html`.
-- Keine Änderungen außerhalb des Ordners, in dem `AGENTS.md` liegt.
+- Keine echten Netzwerkaufrufe in Tests außer gegen `127.0.0.1`.
+- Keine Aufrufe gegen reale Umgebungen, kein `git push`, keine Installationen, keine Änderungen außerhalb dieses Ordners.
 - Keine Refactorings, die nicht verlangt wurden. Pro Auftrag eine Änderung.
+
+# Deployment-Artefakt
+- Ausgeliefert wird nur `healthcheck.js`. Tests und Spezifikationen gehören nicht ins Artefakt.
+- Keine Konfiguration über Umgebungsvariablen, keine Secrets.
 
 # Definition of Done
 - `node --test` ist grün.
