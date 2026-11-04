@@ -10,15 +10,15 @@ Lernprojekt im Workshop; Ziel ist kleiner, lesbarer, getesteter Code.
 # Struktur
 - `timer.js`: reine Logik ohne DOM, ohne `Date.now()`, ohne Timer. Die Zeit wird als Parameter `now` übergeben.
 - `timer.test.js`: Tests für `timer.js`.
-- `index.html`: UI, Verdrahtung (`setInterval`, DOM, Ton, Tab-Titel). Enthält keine Geschäftslogik.
+- `index.html`: UI, Verdrahtung (`setInterval`, DOM, Tab-Titel). Enthält keine Geschäftslogik.
 
 # Konventionen
-- TDD: Für jede neue Funktion in `timer.js` zuerst einen fehlschlagenden Test schreiben, ausführen und das Scheitern zeigen, erst danach implementieren.
+- Tests: Jede neue Funktionalität in `timer.js` wird durch Tests abgesichert (Normalfall und relevante Randfälle). Getestet wird das beobachtbare Verhalten, nicht die interne Implementierung.
 - Restzeit immer aus Endzeitpunkt (`endAt - now`) berechnen, nie per `remaining--` dekrementieren (Drift, Hintergrund-Tabs).
 - Zustand ist ein einfaches Objekt `{ mode, remainingMs, endAt }`. Funktionen sind rein und geben neuen Zustand zurück.
 - Zeiten intern in Millisekunden, Konstanten in `UPPER_SNAKE_CASE`, Funktionen und Variablen in `camelCase`, DOM-Elemente mit Suffix `El`.
 - Ein `setInterval` zur Zeit. Vor jedem Start prüfen oder vorher `clearInterval`.
-- Fehler bei optionalen Features (Audio) fangen und ignorieren, der Timer läuft weiter. Kein `alert()`.
+- Fehler bei optionalen Features fangen und ignorieren, der Timer läuft weiter. Kein `alert()`.
 - Kommentare auf Englisch, nur für das Warum. Benutzer-Texte in der UI auf Deutsch.
 
 # Was die KI nicht tun soll

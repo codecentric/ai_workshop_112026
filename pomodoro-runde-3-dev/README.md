@@ -3,16 +3,19 @@
 ## Teil 1 — Story Refinement (sokratisch)
 
 **Dauer:** 30 Minuten
+
 **Ziel:** Eine DoR-konforme User Story schreiben — durch eigenes Denken + AI als Sparringspartner
+
 **Output:** Eine fertige Story, die ihr am Nachmittag als Input für OpenSpec verwendet
 
 > **Arbeitsort:** Bleibt in eurem eigenen Dev-Arbeitsordner. Dieser enthält bereits
-> den Timer-Basisstand, `AGENTS.md` und Tests aus Runde 2.
+> euren Runde-2-Stand (Code und `AGENTS.md`).
+> Prüft das kurz, bevor ihr startet. `DoR.md` kopiert ihr in Phase 1 aus dem Repo-Root hinein.
 
 
 ### Kontext
 
-Ihr baut heute Nachmittag den Pomodoro Timer mit Spec Driven Development weiter aus. Der Trainer hat am Morgen bereits eine Basis-Version gebaut — ihr erweitert sie.
+Ihr baut in Runde 4 euren Pomodoro Timer mit Spec Driven Development weiter aus. Die Basis ist euer eigener Timer-Stand aus Runde 2 — ihr erweitert ihn.
 
 Ihr bekommt gleich eine vorbereitete User Story für ein Feature — genau wie im Alltag, wo die Story meist vom Product Owner kommt und nicht von euch selbst geschrieben wird.
 
@@ -95,10 +98,6 @@ Speichert eure fertige Story als `story.md` in eurem Arbeitsordner — diese ver
 
 ## Übergabe an Runde 4
 
-- [ ] `story.md` liegt neben Timer-Code, Tests und `AGENTS.md` im eigenen Arbeitsordner.
-- [ ] Jedes Akzeptanzkriterium ist testbar.
-- [ ] Nicht-Ziele sowie wichtige Fehler- und Randfälle sind benannt.
-
-Runde 4 erweitert genau diesen Projektstand; startet dort nicht in einem leeren Ordner.
+- [ ] `story.md` liegt neben Code und `AGENTS.md` im eigenen Arbeitsordner.
 
 **Reflexionsfrage:** War die AI-Rückfrage-Session nützlicher als wenn AI die Story direkt geschrieben hätte? Warum?

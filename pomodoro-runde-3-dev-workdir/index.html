@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pomodoro Timer</title>
+  <style>
+    body { font-family: system-ui, sans-serif; display: grid; place-items: center; min-height: 100vh; margin: 0; background: #1e1e2e; color: #eee; }
+    main { text-align: center; }
+    #mode { font-size: 1.2rem; letter-spacing: .1em; text-transform: uppercase; color: #f38ba8; }
+    body.break #mode { color: #a6e3a1; }
+    #display { font-size: 6rem; font-variant-numeric: tabular-nums; margin: .2em 0; }
+    button { font-size: 1.1rem; padding: .6em 1.2em; margin: 0 .3em; border: 0; border-radius: .4em; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="mode">Arbeit</div>
+    <div id="display" aria-live="off">25:00</div>
+    <button id="toggle">Start</button>
+    <button id="reset">Reset</button>
+  </main>
+
+  <script src="timer.js"></script>
+  <script>
+    const LABELS = { work: 'Arbeit', break: 'Pause' };
+
+    const modeEl = document.getElementById('mode');
+    const displayEl = document.getElementById('display');
+    const toggleEl = document.getElementById('toggle');
+    const resetEl = document.getElementById('reset');
+
+    let state = createState();
+    let intervalId = null;
+
+    function render() {
+      const text = format(state.remainingMs);
+      displayEl.textContent = text;
+      modeEl.textContent = LABELS[state.mode];
+      toggleEl.textContent = isRunning(state) ? 'Pause' : 'Start';
+      document.body.classList.toggle('break', state.mode === 'break');
+      document.title = `${text} · ${LABELS[state.mode]}`;
+    }
+
+    function onTick() {
+      const result = tick(state, Date.now());
+      state = result.state;
+      if (result.phaseEnded) {
+        clearInterval(intervalId);
+      }
+      render();
+    }
+
+    function onToggle() {
+      clearInterval(intervalId); // never more than one interval
+      if (isRunning(state)) {
+        state = pause(state, Date.now());
+      } else {
+        state = start(state, Date.now());
+        intervalId = setInterval(onTick, 250);
+      }
+      render();
+    }
+
+    function onReset() {
+      clearInterval(intervalId);
+      state = reset();
+      render();
+    }
+
+    toggleEl.addEventListener('click', onToggle);
+    resetEl.addEventListener('click', onReset);
+    render();
+  </script>
+</body>
+</html>

@@ -3,7 +3,9 @@
 ## Teil 1 — Story Refinement (sokratisch)
 
 **Dauer:** 30 Minuten
+
 **Ziel:** Eine DoR-konforme User Story schreiben — durch eigenes Denken + AI als Sparringspartner
+
 **Output:** Eine fertige Story, die ihr am Nachmittag als Input für OpenSpec verwendet
 
 > **Arbeitsort:** Bleibt in eurem eigenen DevOps-Arbeitsordner. Dieser enthält
@@ -86,9 +88,5 @@ Speichert eure fertige Story als `story.md` in eurem Arbeitsordner — diese ver
 ## Übergabe an Runde 4
 
 - [ ] Die verfeinerte `story.md` liegt neben eurem DevOps-`AGENTS.md` im Arbeitsordner.
-- [ ] Jedes Akzeptanzkriterium ist testbar; Exit-Codes und Ausgabekanäle sind benannt.
-- [ ] Nicht-Ziele, Fehlerfälle und Sicherheitsgrenzen sind dokumentiert.
-
-Runde 4 verwendet diesen Arbeitsordner direkt. Ein leerer neuer Ordner ist nicht nötig.
 
 **Reflexionsfrage:** War die AI-Rückfrage-Session nützlicher als wenn AI die Story direkt geschrieben hätte? Warum?

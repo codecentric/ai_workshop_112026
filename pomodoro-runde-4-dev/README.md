@@ -3,19 +3,24 @@
 ## Spec Driven Development
 
 **Dauer:** 55 Minuten
-**Ziel:** Den OpenSpec-Workflow einmal vollständig durchlaufen — Explore → Propose → Apply
-**Input:** Eure `story.md`, Timer-Code, Tests und `AGENTS.md` aus dem eigenen Arbeitsordner
-**Voraussetzung:** OpenSpec läuft mit eigenen Slash-Commands (`/opsx:...`). Falls hier noch nicht geschehen: einmal `openspec init` ausführen — installiert die Commands für OpenCode.
 
-**Ziel für 55 Minuten:** Explore und Propose vollständig — Apply soweit die Zeit reicht.
+**Ziel:** Den OpenSpec-Workflow einmal vollständig durchlaufen — Explore → Propose → Apply
+
+**Input:** Der Code, eure `story.md` und `AGENTS.md` aus dem eigenen Arbeitsordner
+
+**Voraussetzung:** OpenSpec läuft mit eigenen Slash-Commands (`/opsx:...`). Falls hier noch nicht geschehen: OpenSpec einmal installieren mit `npm install -g @fission-ai/openspec@latest` und anschließend im Arbeitsordner `openspec init` ausführen — das installiert die Commands für OpenCode.
 
 ## Vor dem Start
 
 Öffnet euren bestehenden Dev-Arbeitsordner aus Runde 2/3. Er enthält:
 
-- den Timer-Code und die Tests aus Runde 2,
+- den Code aus Runde 2,
 - `AGENTS.md`,
 - die in Runde 3 fertiggestellte `story.md`.
+
+Prüft vor dem Start einmal die Tests (z. B. `node --test`): Sie müssen grün laufen, sonst
+hat TDD in Phase 3 keine Basis. Fehlt die Struktur, bittet den Trainer um den
+bereitgestellten Ausgangsstand.
 
 Erstellt keinen neuen leeren Ordner. OpenSpec erweitert den vorhandenen Projektstand.
 

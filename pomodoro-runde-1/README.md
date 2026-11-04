@@ -1,11 +1,12 @@
 # Übung: Pomodoro Timer — Runde 1 (Freestyle)
 
 **Dauer:** 65 Minuten
+
 **Ziel:** OpenCode kennenlernen — einfach loslegen, sehen wie weit man kommt
+
 **Kein Zieldruck:** Es geht nicht darum, eine fertige App zu haben. Es geht darum zu erleben, wie sich die Zusammenarbeit mit OpenCode anfühlt.
 
-> **Arbeitsort:** Arbeitet in eurem eigenen persistenten Arbeitsordner (siehe
-> [Workshop-README](../README.md)).
+> **Arbeitsort:** Arbeitet in eurem eigenen persistenten Arbeitsordner.
 
 ---
 

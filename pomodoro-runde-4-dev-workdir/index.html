@@ -42,24 +42,11 @@
       document.title = `${text} · ${LABELS[state.mode]}`;
     }
 
-    function beep() {
-      try {
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        osc.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.4);
-      } catch {
-        // Audio is optional; the title and display still signal the phase change.
-      }
-    }
-
     function onTick() {
       const result = tick(state, Date.now());
       state = result.state;
       if (result.phaseEnded) {
         clearInterval(intervalId);
-        beep();
       }
       render();
     }

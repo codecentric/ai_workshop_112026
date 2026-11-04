@@ -75,7 +75,6 @@
     function tick() {
       remainingMs = Math.max(0, endAt - Date.now());
       if (remainingMs === 0) {
-        beep();
         // Switch phase and wait for the user to start the next one.
         endAt = null;
         clearInterval(intervalId);
@@ -83,18 +82,6 @@
         remainingMs = DURATIONS_MS[mode];
       }
       render();
-    }
-
-    function beep() {
-      try {
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        osc.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.4);
-      } catch {
-        // Audio is optional; the title and display still signal the phase change.
-      }
     }
 
     toggleEl.addEventListener('click', () => (endAt ? pause() : start()));

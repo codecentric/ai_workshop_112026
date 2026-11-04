@@ -3,9 +3,12 @@
 ## Spec Driven Development (eigener Prozess)
 
 **Dauer:** 55 Minuten
+
 **Ziel:** Den OpenSpec-Workflow einmal vollständig durchlaufen — Explore → Propose → Apply
+
 **Input:** Eure `story.md` und euer DevOps-`AGENTS.md` aus dem eigenen Arbeitsordner
-**Voraussetzung:** OpenSpec läuft mit eigenen Slash-Commands (`/opsx:...`). Falls hier noch nicht geschehen: einmal `openspec init` ausführen — installiert die Commands für OpenCode.
+
+**Voraussetzung:** OpenSpec läuft mit eigenen Slash-Commands (`/opsx:...`). Falls hier noch nicht geschehen: OpenSpec einmal installieren mit `npm install -g @fission-ai/openspec@latest` und anschließend im Arbeitsordner `openspec init` ausführen — das installiert die Commands für OpenCode.
 
 Ihr durchlauft denselben Workflow wie die Dev-Kollegen — aber mit eurem eigenen Use Case.
 
@@ -15,8 +18,6 @@ Ihr durchlauft denselben Workflow wie die Dev-Kollegen — aber mit eurem eigene
 
 - die in Runde 3 fertiggestellte `story.md`,
 - euer DevOps-`AGENTS.md`,
-- optional schon leere Script- und Testdateien, z. B. `healthcheck.js` und
-  `healthcheck.test.js`.
 
 Erstellt keinen neuen leeren Ordner. OpenSpec erzeugt die Spezifikation und implementiert anschließend nur so weit,
 wie die Zeit reicht.

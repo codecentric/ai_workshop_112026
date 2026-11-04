@@ -1,7 +1,9 @@
 # Übung: Pomodoro Timer — Runde 2 (mit AGENTS.md)
 
 **Dauer:** 45 Minuten
+
 **Ziel:** Erleben, was ein gutes AGENTS.md verändert — Vorher-Nachher-Vergleich mit Runde 1
+
 **Voraussetzung:** Der eigene Arbeitsordner enthält den Timer-Stand aus Runde 1.
 Wer in Runde 1 Option B gewählt hat, übernimmt jetzt einen gemeinsamen Timer-Stand
 von einem Dev-Partner oder verwendet den bereitgestellten Ausgangsstand.
@@ -31,6 +33,11 @@ Füllt das generierte AGENTS.md mit relevantem Kontext. Mindestens:
 
 # Tech-Stack
 [Sprache, Framework, Laufzeit — so konkret wie möglich]
+
+# Struktur und Tests (Pflicht, Runde 3 und 4 bauen darauf auf)
+- Timer-Logik ist vom UI getrennt und ohne DOM testbar.
+- Automatisierte Tests sichern die Logik ab und sind mit einem Befehl ausführbar (z. B. `node --test`).
+- Die App läuft per Doppelklick im Browser.
 
 # Konventionen
 [Benennung, Fehlerbehandlung, Stil — was soll die KI wissen?]
@@ -66,7 +73,6 @@ Stellt Runde 1 und Runde 2 nebeneinander:
 
 **Aufgabe A — Eigene Story und AGENTS.md für den Nachmittag vorbereiten (25 min):**
 
-Am Nachmittag (Runde 3) arbeitet ihr mit OpenSpec an einer eigenen Story.
 Euer Thema: ein kleiner, abgrenzbarer DevOps-Prozess aus eurem Alltag.
 
 Beispiele:
@@ -135,11 +141,10 @@ Gebt dem Kollegen Feedback: Was würdet ihr ergänzen?
 
 ### Dev
 
-- [ ] Der Timer-Basisstand, `AGENTS.md` und grüne Tests liegen im eigenen Arbeitsordner.
+- [ ] Der Timer-Basisstand und `AGENTS.md` liegen im eigenen Arbeitsordner.
 - [ ] Ihr wisst, welche AGENTS-Regel den größten Effekt hatte.
 
 ### DevOps
 
 - [ ] Die Rohstory liegt als `story.md` im eigenen Arbeitsordner.
-- [ ] Drei offene Fragen für das Refinement sind notiert.
-- [ ] Ein eigenes DevOps-`AGENTS.md` mit Test-, Exit-Code-, Ausgabe- und Sicherheitsregeln liegt vor.
+- [ ] Ein eigenes DevOps-`AGENTS.md` liegt vor.

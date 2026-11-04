@@ -1,7 +1,9 @@
 # Übung: Fix the Prompt
 
 **Dauer:** 25 Minuten
+
 **Ziel:** Schlechte Prompts verbessern und den Unterschied live in OpenCode sehen
+
 **Aufgabe:** Wählt mindestens 1, wenn Zeit bleibt 2 der 4 Prompts. Führt erst den schlechten aus — dann eure verbesserte Version. Vergleicht die Ergebnisse.
 
 > Tipp: Ihr müsst keinen "perfekten" Prompt schreiben. Schon eine Verbesserung zeigt den Effekt.
