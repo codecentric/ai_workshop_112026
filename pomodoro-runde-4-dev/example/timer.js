@@ -40,41 +40,10 @@ function tick(state, now) {
   return {
     state: createState(state.mode === 'work' ? 'break' : 'work'),
     phaseEnded: true,
-    endedMode: state.mode,
+    completedMode: state.mode,
   };
 }
 
-// --- Session history: pomodoros completed today ---
-// Persisted as a raw JSON string `{ day, count }`; the caller owns the storage.
-
-// Local calendar day as YYYY-MM-DD ("today" means the user's wall clock, not UTC).
-function dayKey(ms) {
-  const d = new Date(ms);
-  const pad = (n) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
-
-// Never throws: missing, corrupt or stale data counts as 0.
-function parseRecord(raw) {
-  try {
-    const r = JSON.parse(raw);
-    if (r && typeof r.day === 'string' && Number.isInteger(r.count) && r.count >= 0) return r;
-  } catch {
-    // fall through
-  }
-  return null;
-}
-
-function readCount(raw, today) {
-  const r = parseRecord(raw);
-  return r && r.day === today ? r.count : 0;
-}
-
-// Returns the new raw string to store.
-function addPomodoro(raw, today) {
-  return JSON.stringify({ day: today, count: readCount(raw, today) + 1 });
-}
-
 if (typeof module !== 'undefined') {
-  module.exports = { DURATIONS_MS, createState, isRunning, format, start, pause, reset, tick, dayKey, readCount, addPomodoro };
+  module.exports = { DURATIONS_MS, createState, isRunning, format, start, pause, reset, tick };
 }

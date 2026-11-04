@@ -1,10 +1,35 @@
 schema: spec-driven
 
-context: |
-  Pomodoro Timer, Vanilla JS, läuft per Doppelklick (file://), keine Dependencies, kein Build.
-  Logik in timer.js (rein, ohne DOM und Date.now), UI in index.html, Tests mit `node --test`.
-  Details stehen in AGENTS.md.
+# Project context (optional)
+# Add only constraints that should guide OpenSpec artifacts and workflows.
+# Include constraints an agent cannot infer by reading the code.
+# Keep general project documentation and discoverable codebase facts out.
+# Example:
+#   context: |
+#     Designs and tasks must cover Windows, macOS, and Linux
+#     Write all artifacts in Spanish
 
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing
 rules:
   tasks:
     - Vor jedem Feature-Task steht ein Test-Task, der zuerst fehlschlägt.
@@ -13,4 +38,3 @@ operations:
   apply:
     guidance:
       - Schreibe für jeden Task zuerst den Test (rot), dann die Implementierung (grün).
-      - Führe nach dem Test-Task `node --test` aus und zeige das Scheitern, bevor du implementierst.

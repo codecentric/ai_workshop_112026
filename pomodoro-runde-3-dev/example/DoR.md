@@ -11,5 +11,5 @@ Eine Story ist "ready" (bereit für Spec Driven Development / die nächste Runde
 
 ## Unsere Ergänzungen
 
-- [ ] Zeitbegriffe ("heute", "Phase beendet") sind mit Zeitbezug definiert (lokale Zeit vs. UTC, Verhalten um Mitternacht, Hintergrund-Tab).
-- [ ] Fehlerfall des Speichers ist benannt (nicht verfügbar, beschädigt), und der Timer darf davon nie beeinträchtigt werden.
+- [ ] Fachliche Regeln und relevante Ausnahmen sind eindeutig beschrieben.
+- [ ] Abhängigkeiten sowie fachliche oder technische Rahmenbedingungen sind geklärt.

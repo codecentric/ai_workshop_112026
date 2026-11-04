@@ -1,34 +1,99 @@
-# Story: Healthcheck vor dem Deployment
+# User Story: Health-Check-CLI
 
-Als Release-Verantwortlicher
-möchte ich vor dem Deployment per Script prüfen, ob die Zielumgebung auf einen HTTP-Healthcheck antwortet, und das Ergebnis als Exit-Code in der Pipeline auswerten können,
-damit eine Pipeline nicht in eine nicht erreichbare Umgebung deployt und ich den Grund des Abbruchs im Log sehe.
+Als Betreiber möchte ich über ein lokales Kommando einen Health Check für eine konfigurierte Anwendung ausführen können, damit ich anhand eines eindeutigen, maschinenlesbaren Ergebnisses feststellen kann, ob die Anwendung und ihre als kritisch definierten Abhängigkeiten betriebsbereit sind.
 
-## Begriffe
+## Begriffe und Abgrenzung
 
-- **Gesund:** Die Zielumgebung antwortet innerhalb des Timeouts mit einem HTTP-Status 200 bis 299. Der Antwortinhalt wird nicht geprüft.
-- **Versuch:** Ein einzelner HTTP-GET auf die angegebene URL. Weiterleitungen (3xx) werden nicht verfolgt und zählen als Fehlschlag.
-- **Timeout:** Maximale Dauer eines einzelnen Versuchs, Standard 5000 ms. Gilt vom Verbindungsaufbau bis zum Eintreffen der Antwort-Header.
-- **Wiederholung:** Bei Fehlschlag wird bis zu einer Gesamtzahl von Versuchen (Standard 3) wiederholt, mit Pause (Standard 2000 ms) zwischen den Versuchen.
-- **Fehlschlag:** Status außerhalb 200-299, Timeout, oder Verbindungsfehler (DNS, Verbindung abgelehnt, TLS).
+- **Betreiber:** Person oder CI-/Betriebsprozess, die bzw. der das bereitgestellte CLI-Skript ausführen darf.
+- **Health Check:** Einmalige technische Prüfung des aktuellen Zustands der Anwendung und ihrer kritischen Abhängigkeiten.
+- **Gesund / betriebsbereit:** Die Anwendung ist erreichbar und alle kritischen Prüfungen sind erfolgreich.
+- **Ungesund / nicht betriebsbereit:** Die Anwendung ist nicht erreichbar, eine kritische Prüfung schlägt fehl oder läuft in ein Timeout.
+- **Kritische Abhängigkeit:** Komponente, ohne die die Anwendung ihren Kernbetrieb nicht aufnehmen oder fortführen kann.
+- **Ausführen:** Starten des lokalen Node.js-CLI-Skripts mit einem gültigen Ziel.
+
+Die Story umfasst ein Node.js-CLI-Skript ohne externe Dependencies. Es prüft den konfigurierten Health-Endpunkt der Anwendung und die dort gemeldeten kritischen Komponenten. Benutzeroberfläche, Alarmierung, Scheduling, Monitoring-Anbindung, Kubernetes-Probes sowie Produktiv- oder Staging-Zugriffe in Tests sind nicht Bestandteil dieser Story.
+
+## Schnittstelle
+
+```bash
+node health-check.js --url <health-endpoint-url>
+```
+
+Beispiel:
+
+```bash
+node health-check.js --url http://localhost:3000/health
+```
+
+### Ausgabe und Exit-Codes
+
+- Das Ergebnis wird ausschließlich als JSON auf `stdout` ausgegeben.
+- Fortschritt, technische Diagnose, Fehlermeldungen und Usage werden ausschließlich auf `stderr` ausgegeben.
+- Ausgaben dürfen keine Secrets, Tokens, Passwörter oder vollständigen sensitiven Eingabewerte enthalten.
+
+| Exit-Code | Bedeutung |
+| --- | --- |
+| `0` | Anwendung und alle kritischen Komponenten sind gesund. |
+| `1` | Fachlicher oder technischer Fehler: Anwendung ist ungesund, nicht erreichbar oder ein Timeout ist aufgetreten. |
+| `2` | Ungültige Eingabe, etwa fehlender oder syntaktisch ungültiger `--url`-Wert. |
+
+Beispiel für eine erfolgreiche Ausgabe:
+
+```json
+{
+  "status": "healthy",
+  "checks": [
+    { "name": "application", "status": "healthy" }
+  ]
+}
+```
+
+Beispiel für eine fehlerhafte Ausgabe:
+
+```json
+{
+  "status": "unhealthy",
+  "checks": [
+    { "name": "application", "status": "unhealthy", "reason": "timeout" }
+  ]
+}
+```
+
+Erlaubte Statuswerte sind `healthy` und `unhealthy`.
 
 ## Akzeptanzkriterien
 
-1. Aufruf: `node healthcheck.js <url> [--attempts N] [--timeout-ms N] [--delay-ms N]`. Ist die Umgebung gesund, endet das Script mit Exit-Code 0 und gibt genau eine Zeile auf stdout aus: `OK <url> HTTP <status> in <ms> ms (Versuch i/N)`.
-2. Der erste erfolgreiche Versuch beendet die Prüfung sofort. Es gibt keine Pause nach dem letzten Versuch und keine Pause nach einem Erfolg.
-3. Schlagen alle Versuche fehl, endet das Script mit Exit-Code 1 und gibt eine Zeile `FEHLER <url> nach N Versuchen: <Grund des letzten Versuchs>` auf stdout aus. Der Grund nennt Status (`HTTP 503`), Timeout (`Timeout nach 5000 ms`) oder Verbindungsfehler (`Verbindungsfehler: ECONNREFUSED`).
-4. Jeder einzelne Versuch wird auf stderr protokolliert: `Versuch i/N: <Ergebnis> (<ms> ms)`.
-5. Fehlende oder ungültige Eingaben (keine URL, anderes Schema als http/https, Zahlen außerhalb des erlaubten Bereichs, unbekannte Option) beenden das Script mit Exit-Code 2 und einer Usage-Meldung auf stderr, ohne dass ein Netzwerkzugriff stattfindet.
-6. Query-Parameter der URL (`?token=...`) erscheinen in keiner Ausgabe, angezeigt wird nur Schema, Host, Port und Pfad. URLs mit Zugangsdaten (`user:pass@host`) werden mit Exit-Code 2 abgelehnt, und die Meldung wiederholt den Wert nicht.
+1. **Erfolgreicher Health Check:** Bei einem gültigen `--url`-Parameter und einem Health-Endpunkt, der für alle kritischen Komponenten `healthy` meldet, beendet sich das Skript mit Exit-Code `0` und schreibt eine Ergebnis-JSON mit `status: "healthy"` auf `stdout`.
 
-## Nicht-Ziele
+2. **Nicht erreichbare Anwendung:** Ist das Ziel einer gültigen URL nicht erreichbar, beendet sich das Skript mit Exit-Code `1`, schreibt eine Ergebnis-JSON mit `status: "unhealthy"` und `reason: "unreachable"` auf `stdout` und gibt technische Diagnose nur auf `stderr` aus.
 
-- Prüfung des Antwortinhalts (JSON-Felder, Versionsnummer), Authentifizierung per Header, Client-Zertifikate.
-- Prüfung mehrerer URLs in einem Aufruf (Pipeline ruft das Script mehrfach auf).
-- Anbindung an ein bestimmtes CI-System, Benachrichtigungen, Metriken.
-- Exponentielles Backoff, Jitter, parallele Versuche.
-- Proxy-Konfiguration (es gilt das Verhalten von Node).
+3. **Fehler einer kritischen Komponente:** Meldet ein erreichbarer Health-Endpunkt mindestens eine kritische Komponente als `unhealthy`, beendet sich das Skript mit Exit-Code `1` und nennt die betroffene Komponente einschließlich Status im JSON-Ergebnis.
 
-## Offene Entscheidung (bewusst getroffen)
+4. **Timeout:** Liefert das Ziel innerhalb von fünf Sekunden keine vollständige Antwort, bricht das Skript die Prüfung ab, beendet sich mit Exit-Code `1` und liefert `status: "unhealthy"` sowie `reason: "timeout"`.
 
-Laufzeit ist Node.js >= 20 ohne Abhängigkeiten (`fetch` und `AbortSignal.timeout` sind eingebaut), da die Pipeline-Agents und die Workshop-Rechner Node bereits haben. Eine Umsetzung in Bash/curl wäre ebenfalls möglich; sie ist hier nicht gewählt, weil sich Timeout, Retry und Exit-Codes in Node per `node --test` ohne Hilfsmittel testen lassen.
+5. **Ungültige Eingabe:** Bei fehlendem `--url`, leerem URL-Wert oder syntaktisch ungültiger URL beendet sich das Skript mit Exit-Code `2`, schreibt keine Ergebnis-JSON auf `stdout` und gibt eine Usage-Nachricht auf `stderr` aus.
+
+6. **Ausgabekanäle:** Jede Ergebnis-JSON steht ausschließlich auf `stdout`; Fortschritt, Diagnose, Fehlerdetails und Usage stehen ausschließlich auf `stderr`.
+
+7. **Sensible Daten:** Weder `stdout` noch `stderr` enthalten Secrets, Tokens, Passwörter oder vollständige sensible Eingabewerte.
+
+8. **Lokal testbar:** Die mit `node --test` ausgeführten automatisierten Tests verwenden ausschließlich lokale Testserver oder Fakes und greifen nicht auf Produktiv- oder Staging-Systeme zu.
+
+## Edge Cases
+
+| Situation | Erwartetes Verhalten |
+| --- | --- |
+| DNS- oder Netzwerkfehler | `unhealthy`, Exit-Code `1`, Grund `unreachable`. |
+| HTTP-Fehlerstatus | `unhealthy`, Exit-Code `1`; HTTP-Status darf als Diagnose auf `stderr` erscheinen. |
+| Ungültiges oder unvollständiges JSON | `unhealthy`, Exit-Code `1`, Grund `invalid_response`. |
+| Mehrere fehlerhafte kritische Komponenten | Alle ermittelten Komponenten stehen im Ergebnis; Exit-Code `1`. |
+| Fehler einer optionalen Komponente | Verändert den Gesamtstatus nicht; optionale Komponenten sind nicht Teil dieser Story. |
+| Parallele Aufrufe | Jeder Aufruf arbeitet unabhängig und speichert keinen gemeinsamen Zustand. |
+| Antwort nach Timeout | Die Antwort wird ignoriert; Ergebnis bleibt `unhealthy` mit Grund `timeout`. |
+
+## Nichtfunktionale Anforderungen
+
+- Node.js mindestens Version 20, CommonJS und keine externen Dependencies.
+- Tests werden mit `node --test` ausgeführt.
+- Der Check führt keine schreibenden oder fachlichen Seiteneffekte aus.
+- Netzwerkzugriffe außerhalb lokaler Tests erfolgen nur nach expliziter Freigabe.

@@ -1,208 +1,321 @@
-# Referenzlösung: Pomodoro Timer — Runde 4 (Dev-Track)
+# Referenzlösung: Pomodoro Timer — Runde 2 (mit AGENTS.md)
 
-Referenz zur [README](README.md): vollständiger OpenSpec-Change und Implementierung auf Basis der Story aus Runde 3.
+Referenz zur [README](README.md): Vorgehen, Beispiel-Prompts, ein Referenz-AGENTS.md, eine Implementierung ([`solution/`](solution/)) und Prüfpunkte für Vergleich und Debrief.
+
+> Wie in Runde 1 ist die Lösung ein **Vergleichswert**, kein Soll. Der Lerneffekt entsteht, wenn ihr euer eigenes AGENTS.md schreibt und seinen Effekt selbst beobachtet.
+
+Inhalt der Referenz in [`solution/`](solution/):
 
 | Datei | Zweck |
 |---|---|
-| [`solution/story.md`](solution/story.md) | Aus Runde 3 übernommene, fertige Story |
-| [`solution/AGENTS.md`](solution/AGENTS.md) | Projektregeln aus Runde 2 |
-| [`solution/openspec/config.yaml`](solution/openspec/config.yaml) | TDD-Regeln für Propose und Apply |
-| [`solution/openspec/changes/sitzungshistorie/`](solution/openspec/changes/sitzungshistorie/) | `proposal.md`, `design.md`, `specs/history/spec.md`, `tasks.md` |
-| [`solution/timer.js`](solution/timer.js), [`timer.test.js`](solution/timer.test.js), [`index.html`](solution/index.html) | Runde-2-Stand plus Feature (19 Tests, `node --test`) |
-
-Ausprobieren:
-```bash
-cd pomodoro-runde-4-dev/solution
-node --test
-open index.html   # Prüfschritte: siehe "Manuell prüfen"
-```
+| [`AGENTS.md`](solution/AGENTS.md) | Referenz-AGENTS.md (aus den Lehren von Runde 1) |
+| [`timer.js`](solution/timer.js) | Reine Timer-Logik, ohne DOM und ohne `Date.now()` |
+| [`timer.test.js`](solution/timer.test.js) | 10 Tests, `node --test` |
+| [`index.html`](solution/index.html) | UI und Verdrahtung |
 
 ---
 
-## Spec Driven Development (55 min)
-### Schritt 0 — `openspec init` und TDD in `config.yaml` (2 min)
+## Entwickler
+
+### Schritt 0 — Vorbereitung (2 min)
+
+Neuer Arbeitsordner, damit Runde 1 als Vergleich erhalten bleibt (die README sagt: leeres Verzeichnis oder neuer Branch):
 
 ```bash
-cd pomodoro-runde-4-dev/mein-timer   # Runde-2-Stand als Basis kopieren
-openspec init                        # Tool "OpenCode" wählen
+cd pomodoro-runde-2
+mkdir mein-timer && cd mein-timer
+opencode
 ```
 
-Danach `openspec/config.yaml` ergänzen. Referenz: [`solution/openspec/config.yaml`](solution/openspec/config.yaml)
+Bei Bedarf Runde 1 daneben öffnen: `open ../../pomodoro-runde-1/index.html`.
 
-```yaml
-schema: spec-driven
+### Schritt 1 — AGENTS.md erstellen (15 min)
 
-context: |
-  Pomodoro Timer, Vanilla JS, läuft per Doppelklick (file://), keine Dependencies, kein Build.
-  Logik in timer.js (rein, ohne DOM und Date.now), UI in index.html, Tests mit `node --test`.
-  Details stehen in AGENTS.md.
+#### 1a. Sammeln, bevor ihr schreibt (3 min)
 
-rules:
-  tasks:
-    - Vor jedem Feature-Task steht ein Test-Task, der zuerst fehlschlägt.
+Der Leitgedanke aus der Runde-1-Lösung: **Alles, was ihr in Runde 1 in jedem Prompt wiederholen musstet, gehört in die AGENTS.md.** Geht eure Runde-1-Prompts durch und markiert Wiederholungen:
 
-operations:
-  apply:
-    guidance:
-      - Schreibe für jeden Task zuerst den Test (rot), dann die Implementierung (grün).
-      - Führe nach dem Test-Task `node --test` aus und zeige das Scheitern, bevor du implementierst.
+| In Runde 1 mehrfach gesagt | Gehört in Abschnitt |
+|---|---|
+| "Eine Datei, Vanilla JS, keine Dependencies" | Tech-Stack |
+| "Restzeit aus `Date.now()`, nicht dekrementieren" | Konventionen |
+| "Ändere nichts außerhalb von `pomodoro-runde-1/`" | Was die KI nicht tun soll |
+| "Audio-Fehler dürfen den Timer nicht stoppen" | Konventionen |
+| "Erkläre am Ende in max. 5 Zeilen" | Definition of Done |
+
+Dazu kommt, was ihr in Runde 1 **nicht** gesagt habt, aber hättet sagen sollen: Teststrategie, Dateistruktur, Benennung.
+
+#### 1b. `opencode init` ausführen
+
+`opencode init` analysiert das Verzeichnis und erzeugt ein AGENTS.md. In einem leeren Ordner kommt wenig Brauchbares heraus. Das ist normal. Der Befehl liefert das Gerüst, den Inhalt liefert ihr. Wer Runde-1-Code im Ordner hat, bekommt eine bessere Vorlage, die ihr dann **kürzen** müsst.
+
+#### 1c. Das Referenz-AGENTS.md
+
+Vollständig in [`solution/AGENTS.md`](solution/AGENTS.md). Die Kernaussagen:
+
+```markdown
+# Projekt
+Pomodoro Timer als Web-App: 25 min Arbeit, 5 min Pause, Start/Pause/Reset, Countdown als MM:SS.
+Lernprojekt im Workshop; Ziel ist kleiner, lesbarer, getesteter Code.
+
+# Tech-Stack
+- Vanilla JavaScript (ES2022), HTML, CSS. Keine Frameworks, keine Dependencies, kein Build-Schritt.
+- Läuft per Doppelklick auf `index.html` (file://). Deshalb keine ES-Module im Browser-Code.
+- Tests mit dem eingebauten Node-Testrunner: `node --test` (Node >= 20). Kein Jest, kein npm.
+
+# Struktur
+- `timer.js`: reine Logik ohne DOM, ohne `Date.now()`, ohne Timer. Zeit kommt als Parameter `now`.
+- `timer.test.js`: Tests für `timer.js`.
+- `index.html`: UI, Verdrahtung. Keine Geschäftslogik.
+
+# Konventionen
+- TDD: Für jede neue Funktion in `timer.js` zuerst einen fehlschlagenden Test, erst danach die Implementierung.
+- Restzeit immer aus Endzeitpunkt (`endAt - now`) berechnen, nie per `remaining--` dekrementieren.
+- Zustand ist ein Objekt `{ mode, remainingMs, endAt }`. Funktionen sind rein.
+- ... (Benennung, ein Interval zur Zeit, Audio-Fehler fangen, kein alert(), Kommentar-Sprache)
+
+# Was die KI nicht tun soll
+- Keine Libraries, kein npm, keine package.json, keine zusätzlichen Dateien ohne Rückfrage.
+- Keine Änderungen außerhalb dieses Ordners. Keine ungefragten Refactorings.
 ```
 
-Der `context`-Block ist optional, aber nützlich: Er ersetzt, dass OpenSpec das Projekt erst erraten muss. Die zweite `guidance`-Zeile ist die Verschärfung aus Runde 2 ("Scheitern zeigen"). Die Struktur (`rules.tasks`, `operations.apply.guidance`) kommt aus der README. Falls eure OpenSpec-Version andere Schlüssel erwartet, gilt, was `openspec init` in der generierten Datei vorgibt.
+**Warum diese Zeilen wirken:**
 
-**Unterschied zu AGENTS.md:** AGENTS.md steuert OpenCode immer; `config.yaml` nur die OpenSpec-Phasen und strukturierter.
+| Zeile | Wirkung |
+|---|---|
+| "Läuft per Doppelklick (file://), deshalb keine ES-Module" | Verhindert die häufige Falle: `<script type="module">` funktioniert unter `file://` nicht (CORS). Das Begründen ("deshalb") hilft der KI, Folgeentscheidungen selbst richtig zu treffen. |
+| "`timer.js` ohne `Date.now()`, Zeit als Parameter" | Macht die Logik deterministisch testbar, ohne Fake-Timer. Das ist die wichtigste Strukturentscheidung. |
+| "TDD: erst fehlschlagender Test" | Die KI zeigt rote Tests, bevor sie implementiert. Ihr seht, **was sie für richtig hält**, bevor Code existiert. |
+| "Keine Änderungen außerhalb dieses Ordners" | Verhindert Streuschäden an der Referenzlösung und Runde 1. |
+| "Zusätzliche Dateien nur nach Rückfrage" | Bremst Dateiinflation (Warnsignal #8 aus Runde 1). |
 
-### Schritt 1 — Explore (13 min)
+**Was NICHT hineingehört:**
+- Dinge, die im Code stehen oder sich per Lesen ergeben (Dateiliste in Prosa wiederholen, jede Funktion beschreiben).
+- Wünsche statt Regeln ("schöner Code", "gute Qualität"). Nicht prüfbar, wirkt nicht.
+- Lange Texte. Das AGENTS.md wird bei **jeder** Anfrage mitgeladen und kostet Kontext. Faustregel: unter ca. 60 Zeilen.
+
+#### 1d. AGENTS.md mit OpenCode verbessern
+
+Der Prompt aus der README, ausgefüllt und mit Format versehen:
 
 ```
-/opsx:explore @story.md
+Ich baue einen Pomodoro Timer (Web-App, 25/5 min, Start/Pause/Reset, Vanilla JS, eine
+index.html, läuft per Doppelklick). Mein AGENTS.md enthält bisher:
+
+[AGENTS.md einfügen]
+
+Was fehlt, damit die KI meinen Code-Stil versteht und konsistentere Ergebnisse liefert?
+
+Format: Tabelle Lücke | Warum relevant | konkreter Formulierungsvorschlag (1 Zeile).
+Maximal 6 Zeilen. Nenne auch Zeilen, die überflüssig oder widersprüchlich sind.
+Ändere die Datei nicht.
 ```
 
-**Regel: kein Code.** Wenn die KI anfängt zu implementieren: "Stopp, wir sind in Explore. Nur Fragen und Optionen."
+**Typische Vorschläge der KI:** Fehlerbehandlung, Umgang mit Zeitzonen/Systemuhr, Barrierefreiheit, Commit-Konventionen, Linter.
+**Eure Aufgabe:** Filtern. Nur übernehmen, was für **dieses** Projekt eine Regel ist. Die KI neigt dazu, AGENTS.md aufzublähen. Streicht großzügig.
 
-Typische Rückfragen von OpenSpec und Referenzantworten:
+### Schritt 2 — Nochmal bauen (25 min)
 
-| Frage | Antwort | Wirkung |
+Bewusst **den gleichen Auftrag wie in Runde 1**, damit der Vergleich fair ist. Nur kürzer, weil Technik und Konventionen jetzt im AGENTS.md stehen.
+
+**Startprompt Runde 2:**
+```
+Baue einen Pomodoro Timer.
+
+Funktionen:
+- 25 Minuten Arbeitsphase, danach 5 Minuten Pause
+- Start/Pause als Toggle-Button, Reset
+- Countdown als MM:SS, aktuelle Phase sichtbar, Restzeit im Tab-Titel
+- Signalton am Phasenende
+
+Halte dich an die AGENTS.md.
+```
+
+Vergleich zu Runde 1: Der Prompt hat etwa die Hälfte an Text, es fehlen Technik, Drift-Hinweis, Scope-Grenze, Ausgabeformat.
+
+**Erwarteter Ablauf mit TDD-Regel:**
+
+1. Die KI schreibt `timer.test.js` und führt `node --test` aus: rot (Modul fehlt).
+2. Implementierung von `timer.js`, grün.
+3. `index.html` als dünne Schicht.
+
+Wenn die KI diese Reihenfolge nicht einhält, ist das ein **Befund für euer AGENTS.md**: Die Regel ist zu schwach formuliert. Verschärft sie ("Zeige den fehlschlagenden Testlauf, bevor du implementierst") und startet neu.
+
+**Iterations-Prompts** (gleiche wie Runde 1, jetzt mit weniger Erklärung nötig):
+
+| Reihenfolge | Prompt | Was ihr beobachten sollt |
 |---|---|---|
-| Wo wird der Zähler gespeichert? | `localStorage`, ein Schlüssel, ein Datensatz `{day, count}` | Design-Entscheidung |
-| Was passiert bei Phasenende im Hintergrund-Tab? | `tick` erkennt es beim nächsten Aufruf, einmal zählen | AK 2 bestätigt |
-| Woher weiß die UI, dass eine *Arbeits*phase endete? | `tick` liefert zusätzlich `endedMode` | Kleine Änderung an bestehender API |
-| Wo lebt die Zähl-Logik? | `timer.js`, rein; Rohstring rein, Rohstring raus | Testbar ohne Browser |
-| Neuer Tag bei offener Seite? | Wird beim nächsten `render` erkannt | Kein eigener Timer |
+| 1 | `Mach die Dauern per URL-Parameter konfigurierbar (?work=0.1&break=0.05, Minuten). Ungültige Werte fallen auf 25/5 zurück.` | Kommt zuerst ein Test für die Parameter-Auswertung? Landet die Logik in `timer.js` statt in `index.html`? |
+| 2 | `Zeige einen Zähler der abgeschlossenen Arbeitsphasen.` | Wird der Zähler in den Zustand `{ mode, remainingMs, endAt }` aufgenommen und getestet? |
+| 3 | `Nach Phasenende soll die nächste Phase automatisch starten, abschaltbar per Checkbox.` | Bleibt `tick` rein? Bleibt es bei **einer** Änderung? |
 
-Wenn die Fragen eine Lücke in der Story aufdecken, `story.md` anpassen. In der Referenz kam dabei die Frage nach `endedMode` hinzu, das war vorher nicht in der Story, nur im Design.
+#### Prüfpunkte für das Ergebnis
 
-### Schritt 2 — Propose (20 min)
+Die Tabelle "Typische Probleme" aus Runde 1 gilt weiter. Zusätzlich:
 
-```
-/opsx:propose sitzungshistorie
-```
+| # | Prüfpunkt | Wie prüfen |
+|---|---|---|
+| 1 | `node --test` ist grün, und die Tests prüfen Verhalten (Pause/Resume, Phasenwechsel, Hintergrund-Tab), nicht nur Formatierung. | `node --test` ausführen, Testnamen lesen |
+| 2 | Keine `package.json`, kein `node_modules`, keine Extra-Dateien. | `ls -a` |
+| 3 | Browser-Code enthält kein `import`/`export`. | Doppelklick auf `index.html`, Konsole prüfen |
+| 4 | `timer.js` enthält weder `Date.now()` noch `document`. | `grep -nE "Date.now|document" timer.js` |
+| 5 | Nichts außerhalb des Ordners geändert. | `git status` im Repo-Root |
 
-Erzeugt `openspec/changes/sitzungshistorie/` mit den Artefakten. Referenz-Ergebnis (gekürzt, vollständig im Ordner):
+#### Referenzimplementierung
 
-**[`proposal.md`](solution/openspec/changes/sitzungshistorie/proposal.md):** Why (Pomodoros im Kopf zählen), What Changes (Zähler, `endedMode`, localStorage), Nicht-Ziele, Impact (nur `timer.js` und `index.html`), offene Frage Mehrfach-Tabs.
+[`solution/timer.js`](solution/timer.js) ist bewusst klein:
 
-**[`design.md`](solution/openspec/changes/sitzungshistorie/design.md):** Kernentscheidungen:
-
-| Entscheidung | Begründung |
+| Funktion | Aufgabe |
 |---|---|
-| Ein Datensatz `{day, count}` statt Liste aller Phasen | Mehrtagesverlauf ist Nicht-Ziel; Tageswechsel = Datensatz verwerfen |
-| Rohstring rein, Rohstring raus | Logik ohne Storage-Mock testbar |
-| `dayKey` über lokale Getter, nicht `toISOString()` | UTC würde den Tag zur falschen lokalen Zeit wechseln |
-| Zählen bei `endedMode === 'work'` | `tick` stellt die Phase sofort um, ein späterer Tick kann nicht doppelt zählen |
-| try/catch um `localStorage`, Rohstring zusätzlich im Speicher | Blockierter Storage darf Timer nicht stoppen |
+| `createState(mode)` | Neuer Zustand mit voller Phasendauer |
+| `start(state, now)` | Setzt `endAt = now + remainingMs`. Läuft er schon, ist es ein No-op (Doppelklick-Schutz). |
+| `pause(state, now)` | Speichert `endAt - now` als `remainingMs`, löscht `endAt` |
+| `tick(state, now)` | Berechnet Restzeit aus der Uhr. Am Ende: Phasenwechsel, Timer steht, `phaseEnded: true` |
+| `reset()` | Frische Arbeitsphase |
+| `format(ms)` | `MM:SS` mit `Math.ceil` |
 
-**[`specs/history/spec.md`](solution/openspec/changes/sitzungshistorie/specs/history/spec.md):** 4 Requirements mit `SHALL`, 8 Scenarios in WHEN/THEN. Jedes Scenario entspricht einem Test.
+Die Tests rufen alles mit festen `now`-Werten auf. Der Hintergrund-Tab-Fall ist ein Einzeiler (`tick` einmal nach 10 Minuten, Restzeit stimmt), ganz ohne Fake-Timer und ohne Warten.
 
-**[`tasks.md`](solution/openspec/changes/sitzungshistorie/tasks.md):** 5 Gruppen, jede mit Test-Task vor Implementierungs-Task.
+Ausprobieren:
+```bash
+cd pomodoro-runde-2/solution
+node --test
+open index.html
+```
 
-#### Checkliste für das Lesen des Ergebnisses
+### Schritt 3 — Vergleich (5 min)
 
-| Prüfpunkt | Wenn nein |
+Vorlage zum Ausfüllen:
+
+| Kriterium | Runde 1 | Runde 2 |
+|---|---|---|
+| Länge des Startprompts (Zeilen) | | |
+| Zeit bis zum ersten lauffähigen Stand | | |
+| Anzahl Korrekturprompts ("nein, nicht so") | | |
+| Anzahl Dateien | | |
+| Tests vorhanden / grün | | |
+| Hintergrund-Tab korrekt | | |
+| Code-Stil in Iterationen konsistent | | |
+
+**Orientierungsantworten:**
+
+| Frage | Typische Beobachtung |
 |---|---|
-| Steht vor **jedem** Feature-Task ein Test-Task? (TDD-Probe) | `config.yaml` schärfen, `/opsx:propose` neu, nicht `tasks.md` von Hand flicken |
-| Deckt jede AK der Story mindestens ein Scenario ab? | OpenSpec im Chat: "AK 3 fehlt in der Spec" |
-| Hat die KI Scope hinzugefügt (Tagesziel, Statistik, Reset-Button)? | Streichen lassen, auf Nicht-Ziele verweisen |
-| Stimmt das Design mit AGENTS.md überein (Logik in `timer.js`, kein Modul-Import)? | Korrigieren lassen |
+| Musste ich weniger erklären? | Ja bei Technik, Scope und Ausgabeformat. Nein bei fachlichen Wünschen, die stehen weiter im Prompt. |
+| Ist der Code konsistenter? | Ja, vor allem über mehrere Iterationen: gleiche Benennung, gleiche Struktur, Logik bleibt in `timer.js`. |
+| Welche Zeile half am meisten? | Meist die **Strukturregel** (Logik getrennt von UI, Zeit als Parameter) oder die **TDD-Regel**. Weniger die Tech-Stack-Zeilen, die setzt eine gute Prompt-Formulierung auch. |
+| Was hat nicht funktioniert? | Regeln, die die KI ignoriert hat. Meist zu vage oder zu weit oben im langen Dokument. Positiv und konkret formulieren ("Nutze X") statt nur "Nutze nicht Y". |
+| Kostet das AGENTS.md etwas? | Ja: Es wird bei jeder Anfrage in den Kontext geladen. Kurz und aktuell halten. |
 
-Die häufigsten KI-Fehler in diesem Schritt: **Scope-Aufblähung** (Verlauf der letzten 7 Tage), **falsche Architektur** (Logik in `index.html`) und **fehlende Fehlerfälle** (nur der Happy Path in den Scenarios).
+**Ehrlicher Hinweis:** Ein einzelner Vergleich ist anekdotisch. KI-Ausgaben schwanken. Wenn Runde 2 besser aussieht, könnte das auch daran liegen, dass ihr die Aufgabe nach Runde 1 besser versteht. Die Lerneinsicht ist nicht "AGENTS.md macht es X% besser", sondern "diese Zeilen steuern das Verhalten messbar".
 
-### Schritt 3 — Apply (20 min oder Rest)
+---
 
+## DevOps
+
+### Aufgabe B — AGENTS.md eines Kollegen reviewen (20 min)
+
+#### Vorgehen
+
+1. AGENTS.md des Dev-Kollegen lesen, **bevor** ihr die KI fragt (5 min). Notiert eigene Lücken.
+2. Prompt ausführen, Ergebnis mit eurer Liste abgleichen (10 min).
+3. Dem Kollegen 3-5 priorisierte Rückmeldungen geben (5 min).
+
+**Prompt (ausgefüllt, Plan Mode mit Shift+Tab):**
 ```
-/opsx:apply
-```
+Hier ist das AGENTS.md eines Entwicklers für einen Pomodoro Timer
+(Web-App, statische Dateien):
 
-Erwarteter Ablauf pro Task-Gruppe. Das ist der echte TDD-Lerneffekt, beobachtet ihn:
+[Inhalt einfügen]
 
-**Gruppe 1, Test (rot):**
-```
-$ node --test
-✖ tick reports which mode just ended
-  error: ... endedMode ... undefined
-```
-**Gruppe 1, Implementierung (grün):** `tick` gibt `endedMode: state.mode` zurück.
+Aus Sicht eines DevOps-Engineers: Was fehlt, was in diesem Projekt wichtig wäre?
+(z.B. Build-Prozess, Deployment-Constraints, Umgebungsvariablen, Logging)
 
-Der erste Gesamtlauf der Referenz mit allen neuen Tests, bevor implementiert war:
-```
-# tests 19
-# pass 10
-# fail 9     (addPomodoro is not a function, ...)
-```
-Nach der Implementierung:
-```
-# tests 19
-# pass 19
-# fail 0
-```
-
-#### Die Implementierung im Überblick
-
-Neu in [`timer.js`](solution/timer.js):
-
-```js
-function dayKey(ms) {                     // local calendar day, not UTC
-  const d = new Date(ms);
-  const pad = (n) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
-
-function parseRecord(raw) {               // never throws
-  try {
-    const r = JSON.parse(raw);
-    if (r && typeof r.day === 'string' && Number.isInteger(r.count) && r.count >= 0) return r;
-  } catch { /* fall through */ }
-  return null;
-}
-
-function readCount(raw, today) {
-  const r = parseRecord(raw);
-  return r && r.day === today ? r.count : 0;
-}
-
-function addPomodoro(raw, today) {        // returns the new raw string to store
-  return JSON.stringify({ day: today, count: readCount(raw, today) + 1 });
-}
+Format: Tabelle Lücke | Warum relevant für Betrieb | Formulierungsvorschlag.
+Maximal 6 Zeilen, nach Wichtigkeit sortiert.
+Sag auch, wo etwas für DIESES Projekt unnötig wäre (z.B. Umgebungsvariablen bei
+einer statischen Seite). Ändere keine Dateien.
 ```
 
-Und `tick` meldet bei Phasenende `endedMode: state.mode` mit.
+#### Bewertungsraster
 
-`new Date(ms)` in `timer.js` ist mit der AGENTS.md-Regel "kein `Date.now()`" vereinbar: Die Funktion bekommt die Zeit als Parameter, nur die Kalender-Zerlegung läuft intern.
+| Bereich | Frage ans AGENTS.md | Relevant für Pomodoro? |
+|---|---|---|
+| Build | Wie wird gebaut? Gibt es einen Build? | Ja, die Aussage "kein Build-Schritt" muss drinstehen |
+| Test-Kommando | Ist das Kommando eindeutig und CI-tauglich (Exit-Code)? | Ja, `node --test` |
+| Laufzeitversion | Welche Node-Version? | Ja, `>= 20` |
+| Deployment | Wohin, wie? Welche Dateien gehören ins Artefakt? | Ja: nur `index.html` und `timer.js`, **nicht** die Tests |
+| Konfiguration/Secrets | Umgebungsvariablen? | Nein. Statische Seite, ein Satz "keine Konfiguration, keine Secrets" reicht |
+| Logging/Fehler | Wie werden Fehler sichtbar? | Gering: Konsolenfehler im Browser. Audio-Fehler bewusst ignoriert |
+| Abhängigkeiten | Lizenz, Updates, Supply Chain | Positiv: keine Dependencies, sollte als Regel stehen |
+| Grenzen für die KI | Verbotene Aktionen, z. B. `git push`, Löschen | Ja, Dateien außerhalb des Ordners |
+| Git | Branch-/Commit-Konventionen | Optional |
 
-Verdrahtung in [`index.html`](solution/index.html):
-```js
-if (result.endedMode === 'work') {
-  rawHistory = addPomodoro(rawHistory, dayKey(Date.now()));
-  saveRaw(rawHistory);              // try/catch inside, timer keeps running
-}
+**Typische Ergänzungen, die ein DevOps-Review findet:**
+- "Test-Befehl und Exit-Code dokumentieren, damit CI ihn übernehmen kann."
+- "Welche Dateien werden ausgeliefert?" (Tests gehören nicht ins Artefakt.)
+- "Browser-Unterstützung festlegen" (z. B. aktuelle Chrome/Firefox/Safari), sonst entscheidet die KI beliebig, welche APIs sie nutzt.
+- "KI darf keine Befehle mit Seiteneffekten außerhalb des Projekts ausführen (`git push`, `rm -rf`, Installationen)."
+
+**Gutes Feedback ist:** konkret (Formulierungsvorschlag mitliefern), priorisiert (Top 3), projektbezogen (nicht jede Best Practice, sondern was hier zählt).
+
+### Aufgabe A — Story und eigenes AGENTS.md für den Nachmittag vorbereiten (25 min)
+
+Ihr schreibt eine **grobe** User Story ohne KI. Die Verfeinerung gegen die [Definition of Ready](../DoR.md) kommt später in der Story-Refinement-Übung. Die Story muss jetzt noch nicht fertig sein, aber so klar, dass ihr sie später gezielt schärfen könnt.
+
+#### Vorgehen
+
+1. Alltagssituation wählen (5 min): Was habt ihr zuletzt von Hand gemacht und dabei gedacht "das müsste ein Script tun"?
+2. Eingrenzen (5 min): Passt es in **ein** Script mit klarer Ein- und Ausgabe? Ist es prüfbar, ohne Zugriff auf Produktivsysteme?
+3. Story schreiben (10 min), nur Als/möchte/damit.
+4. Selbsttest (5 min): Drei Fragen, die ihr noch nicht beantworten könnt, notieren. Das sind die Punkte fürs Refinement.
+
+#### Auswahlkriterien
+
+| Kriterium | Gut | Schlecht |
+|---|---|---|
+| Größe | Ein Script, ein Zweck | "CI-Pipeline neu bauen" |
+| Testbarkeit | Ein Beispiel-Input, erwarteter Output | Braucht echtes Cluster/Produktivzugang |
+| Abhängigkeiten | Läuft lokal | Braucht Secrets oder Netzfreigaben |
+| Fachwissen | Ihr kennt die Domäne | Ihr müsstet erst recherchieren |
+
+#### Beispiel: gute Rohfassung
+
+**Thema: Branch-Naming prüfen**
 ```
+Als Entwickler im Team
+möchte ich vor dem Push automatisch prüfen lassen, ob mein Branch-Name unserer Konvention entspricht
+damit ungültige Branch-Namen nicht in der Pipeline scheitern.
+```
+Offene Fragen für das Refinement (Selbsttest): Wie genau lautet die Konvention? Welche Branches sind ausgenommen (`main`, `release/*`)? Wo läuft die Prüfung (lokal, CI, beides)? Welche Meldung bei Verstoß? Welcher Exit-Code?
 
-#### Manuell prüfen (nach `/opsx:apply`)
+**Thema: Log-Auswertung**
+```
+Als Betriebsverantwortlicher
+möchte ich aus einer Log-Datei eine Zusammenfassung der Fehler nach Typ und Häufigkeit erhalten
+damit ich nach einem Vorfall in unter einer Minute sehe, was am häufigsten schiefging.
+```
+Offene Fragen: Welches Log-Format? Welcher Zeitraum? Was zählt als Fehler? Ausgabe als Tabelle, JSON oder Datei? Was bei leerem Log?
 
-Die Tests decken die Logik ab, nicht die Verdrahtung. Kurzer Check im Browser (DevTools-Konsole), ohne 25 Minuten zu warten:
+**Thema: Healthcheck vor Deployment**
+```
+Als Release-Verantwortlicher
+möchte ich vor dem Deployment automatisch prüfen, ob die Zielumgebung antwortet
+damit ich nicht in eine nicht erreichbare Umgebung deploye.
+```
+Offene Fragen: Was heißt "antwortet" (HTTP 200? Antwortzeit?)? Wie viele Wiederholungen, welches Timeout? Was passiert bei Fehlschlag (Abbruch, Warnung)?
 
-| Schritt | Erwartung |
-|---|---|
-| In `timer.js` temporär `work: 5 * 1000` setzen, Seite öffnen, Start | Nach 5 s Pausenmodus, "Heute: 1 Pomodoro", Ton |
-| Seite neu laden | Weiterhin "Heute: 1 Pomodoro" |
-| Während Arbeitsphase auf Reset klicken | Zähler unverändert |
-| Pausenphase ablaufen lassen (`break` kurz setzen) | Zähler unverändert |
-| Konsole: `localStorage.setItem('pomodoro.history', '{"day":"2000-01-01","count":9}')`, neu laden | "Heute: 0 Pomodoros" |
-| Konsole: `localStorage.setItem('pomodoro.history', 'kaputt')`, neu laden | "Heute: 0 Pomodoros", kein Fehler |
-| Storage blockieren (Browser-Einstellung "Cookies/Seitendaten blockieren") | Timer läuft, Zähler zählt bis zum Neuladen |
+#### Typische Fehler in der Rohfassung (jetzt schon vermeiden)
 
-Dauern danach wieder auf 25/5 zurücksetzen.
+| Fehler | Beispiel | Besser |
+|---|---|---|
+| Lösung statt Nutzen | "damit wir Bash und Python einsetzen" | Nutzen für den Anwender nennen |
+| Unscharfes Wort | "schnell", "einfach", "robust" | Messbar machen: "unter 1 Minute" |
+| Implizite Technik | "Jenkins-Plugin für ..." | Plattform erst im Refinement festlegen |
+| Zu groß | "gesamtes Monitoring" | Einen Ausschnitt wählen |
+| Rolle fehlt | "Als Nutzer" | Konkrete Rolle: "Als Release-Verantwortlicher" |
 
-Optional: `/opsx:archive` führt die Delta-Spec in `openspec/specs/history/spec.md` zusammen.
-
-### Was ihr am Ende haben solltet
-
-| Artefakt | Referenz |
-|---|---|
-| `story.md` | [`solution/story.md`](solution/story.md) |
-| `proposal.md` | [`…/sitzungshistorie/proposal.md`](solution/openspec/changes/sitzungshistorie/proposal.md) |
-| `tasks.md` mit Haken | [`…/sitzungshistorie/tasks.md`](solution/openspec/changes/sitzungshistorie/tasks.md) |
-| Code | [`solution/timer.js`](solution/timer.js), [`index.html`](solution/index.html), 19 Tests grün |
+Die gute Rohfassung hat **offene Fragen**, keine Lücken, die ihr übersehen habt. Wer jetzt alles beantwortet hat, hat die Story schon verfeinert. Das ist auch in Ordnung.
 
 ---
 
@@ -210,28 +323,10 @@ Optional: `/opsx:archive` führt die Delta-Spec in `openspec/specs/history/spec.
 
 | Frage | Typische Beobachtung |
 |---|---|
-| Wo hat der Plan geholfen? | Die Mitternachts- und Hintergrund-Tab-Fälle standen vor dem ersten Code fest. Ohne Spec hätte die KI `toISOString()` genutzt und der Fehler wäre erst nachts aufgefallen. |
-| Wo hat der Plan gebremst? | Für eine ~40-Zeilen-Änderung sind 4 Artefakte Overhead. Der Aufwand lohnt sich bei Features mit Randfällen, nicht bei Textänderungen. |
-| Was war anders als Runde 1? | Runde 1: Freestyle, Annahmen implizit, Korrekturen am fertigen Code. Runde 3: Annahmen explizit vor dem Code, Korrektur am Plan (billig). |
-| Rolle von AGENTS.md vs. OpenSpec? | AGENTS.md = **Wie** (Stil, Struktur, Grenzen), dauerhaft. OpenSpec = **Was** (Verhalten dieses Features), pro Change. |
-| Für welche Aufgaben übernehmen? | Features mit Fachlogik, Randfällen und mehreren Beteiligten. Weniger für Bugfixes mit klarer Ursache oder Spikes. |
-| Was ging schief? | Typisch: KI ignoriert TDD in Apply (Regel in `config.yaml` schärfen), Scope-Aufblähung in Propose, Spec beschreibt nur den Happy Path. |
+| Devs: Was hat sich durch das AGENTS.md verändert? | Kürzere Prompts, weniger Nacharbeit bei Technik und Struktur. Mehr Konsistenz über Iterationen. Mit TDD-Regel kommen Tests vor dem Code. |
+| DevOps: Was habt ihr im AGENTS.md vermisst? | Test-Kommando mit Exit-Code, Deployment-Artefakt, unterstützte Browser/Laufzeit, Grenzen für Befehle mit Seiteneffekten. Betriebsthemen fehlen, weil Devs sie nicht mitdenken. |
+| Alle: Welche Information hatte den größten Effekt? | Strukturregeln und Verbote ("nicht tun") wirken stärker als Beschreibungen. Wer nur Tech-Stack aufschrieb, merkte wenig Unterschied. |
+| Was gehört nicht ins AGENTS.md? | Alles, was die KI aus dem Code lesen kann, Wünsche ohne Prüfbarkeit, einmalige Aufgaben. |
+| Wie bleibt die Datei gut? | Wie Code behandeln: im Repo, reviewt, bei wiederholten Korrekturen ergänzt ("Wenn ich etwas zweimal sage, gehört es hinein") und von Überholtem befreit. |
 
-**Ehrlicher Hinweis:** Ein einzelner Durchlauf ist anekdotisch. Die Spec ist nur so gut wie die Story, die Fragen der KI sind nur so gut wie eure Antworten.
-
----
-
-## Story A (Pausen-Benachrichtigung) — Abweichungen
-
-Wer Story A gewählt hat, braucht andere Schwerpunkte:
-
-| Thema | Offene Frage in Phase 2 | Referenzentscheidung |
-|---|---|---|
-| "Benachrichtigt" | Ton, Titel, System-Notification? | Web Notifications API **zusätzlich** zum bestehenden Ton, nur wenn der Nutzer erlaubt hat |
-| Berechtigung | Wann fragen? | Erst beim ersten Klick auf Start, nie beim Laden (Browser blockieren sonst) |
-| Berechtigung verweigert | Was dann? | Ton und Tab-Titel wie bisher, keine Fehlermeldung |
-| `file://` | Funktioniert Notification dort? | Browserabhängig, **nicht garantiert**. Das ist eine Plattformannahme, die in die Story gehört |
-| Beginn *und* Ende der Pause | Zwei Ereignisse? | Beginn = Ende der Arbeitsphase, Ende = Ende der Pause: beide über `phaseEnded` mit `endedMode` |
-| Tab sichtbar | Notification trotzdem? | Nur wenn Tab nicht sichtbar (`document.hidden`), sonst doppelt gemoppelt |
-
-Architektur analog: Entscheidung "welche Meldung zu welchem Ereignis" als reine Funktion in `timer.js` (`notificationFor(endedMode)` liefert Text oder `null`), `Notification` selbst nur in `index.html`, in try/catch.
+**Brücke zu Runde 3:** AGENTS.md regelt das **Wie** (Stil, Struktur, Grenzen). Das **Was** (konkretes Verhalten einer Funktion) gehört in eine Spezifikation. Genau dafür kommt am Nachmittag OpenSpec, und eure heute geschriebene Story ist der Input.
