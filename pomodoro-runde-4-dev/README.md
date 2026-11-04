@@ -19,19 +19,6 @@
 
 Erstellt keinen neuen leeren Ordner. OpenSpec erweitert den vorhandenen Projektstand.
 
-## Was gilt als Erfolg?
-
-| Stufe | Ergebnis |
-|---|---|
-| **Minimum** | `story.md` ist geklärt; Explore und Propose sind abgeschlossen. |
-| **Gut** | Die Spec deckt alle Akzeptanzkriterien ab; `tasks.md` enthält Tests vor Feature-Tasks. |
-| **Sehr gut** | Eine kleine, vollständige Task-Gruppe wurde test-first umgesetzt. |
-| **Stretch** | Mehrere Tasks oder die gesamte Story sind implementiert und die Tests sind grün. |
-
-Eine nicht vollständig umgesetzte Story ist kein Misserfolg. Das Lernziel ist,
-den Spec-Workflow und die Qualität der Entscheidungen **vor** dem Code zu erleben.
-
-
 ### Phase 1 — TDD verankern + Explore (15 min)
 
 **Schritt 0 — TDD in `config.yaml` verankern (2 min):**

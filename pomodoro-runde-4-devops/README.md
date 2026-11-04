@@ -21,18 +21,6 @@ Ihr durchlauft denselben Workflow wie die Dev-Kollegen — aber mit eurem eigene
 Erstellt keinen neuen leeren Ordner. OpenSpec erzeugt die Spezifikation und implementiert anschließend nur so weit,
 wie die Zeit reicht.
 
-## Was gilt als Erfolg?
-
-| Stufe | Ergebnis |
-|---|---|
-| **Minimum** | `story.md` ist geklärt; Explore und Propose sind abgeschlossen. |
-| **Gut** | Die Spec deckt alle Akzeptanzkriterien ab; Exit-Codes, stdout/stderr und Test-Tasks sind enthalten. |
-| **Sehr gut** | Eine kleine, vollständige Task-Gruppe wurde test-first umgesetzt. |
-| **Stretch** | Mehrere Tasks oder die gesamte Story sind implementiert und die Tests sind grün. |
-
-Eine nicht vollständig umgesetzte Story ist kein Misserfolg. Im Vordergrund stehen
-klare Betriebsentscheidungen und ein belastbarer Plan vor dem Code.
-
 
 ### Phase 1 — TDD verankern + Explore (15 min)
 
