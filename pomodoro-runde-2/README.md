@@ -33,7 +33,7 @@ Füllt das generierte AGENTS.md mit relevantem Kontext. Mindestens:
 # Tech-Stack
 [Sprache, Framework, Laufzeit — so konkret wie möglich]
 
-# Struktur und Tests (Pflicht, Runde 3 und 4 bauen darauf auf)
+# Struktur und Tests (Pflicht)
 - Timer-Logik ist vom UI getrennt und ohne DOM testbar.
 - Automatisierte Tests sichern die Logik ab und sind mit einem Befehl ausführbar (z. B. `node --test`).
 - Die App läuft per Doppelklick im Browser.
@@ -68,9 +68,9 @@ Stellt Runde 1 und Runde 2 nebeneinander:
 
 ---
 
-### DevOps — AGENTS.md reviewen + Story für den Nachmittag
+### DevOps — Eigene Story + AGENTS.md reviewen
 
-**Aufgabe A — Eigene Story und AGENTS.md für den Nachmittag vorbereiten (25 min):**
+**Aufgabe A — Eigene Story und AGENTS.md vorbereiten (25 min):**
 
 Euer Thema: ein kleiner, abgrenzbarer DevOps-Prozess aus eurem Alltag.
 
@@ -85,8 +85,6 @@ Als [wen?]
 möchte ich [was?]
 damit [warum?]
 ```
-
-Ihr verfeinert sie in der Story-Refinement-Übung vor der Mittagspause (siehe `../pomodoro-runde-3-devops/`).
 
 Speichert die Rohfassung direkt als `story.md` in eurem eigenen Arbeitsordner.
 Erstellt daneben ein eigenes `AGENTS.md`. Es enthält mindestens:
@@ -120,7 +118,7 @@ Gebt dem Kollegen Feedback: Was würdet ihr ergänzen?
 | Dauer | Was | Wer |
 |---|---|---|
 | 15 Minuten | `AGENTS.md` mit `/init` erstellen und ergänzen | Entwickler |
-| 25 Minuten | Grobe DevOps-Story und eigenes AGENTS.md für Runde 3/4 vorbereiten | DevOps |
+| 25 Minuten | Grobe DevOps-Story und eigenes AGENTS.md vorbereiten | DevOps |
 | 25 Minuten | Runde-1-Use-Case mit dem neuen Kontext erneut bauen | Entwickler |
 | 20 Minuten | AGENTS.md eines Dev-Kollegen reviewen und Feedback geben | DevOps |
 | 5 Minuten | Runde 1 und 2 vergleichen | Entwickler |

@@ -6,7 +6,7 @@
 
 **Ziel:** Eine DoR-konforme User Story schreiben — durch eigenes Denken + AI als Sparringspartner
 
-**Output:** Eine fertige Story, die ihr am Nachmittag als Input für OpenSpec verwendet
+**Output:** Eine fertige, DoR-geprüfte Story als `story.md` im Arbeitsordner
 
 > **Arbeitsort:** Bleibt in eurem eigenen Arbeitsordner. Dieser enthält bereits
 > euren Runde-2-Stand (Code und `AGENTS.md`). Prüft das kurz, bevor ihr startet.
@@ -15,7 +15,7 @@
 
 ### Kontext
 
-Ihr baut in Runde 4 euren Pomodoro Timer mit Spec Driven Development weiter aus. Die Basis ist euer eigener Timer-Stand aus Runde 2 — ihr erweitert ihn.
+Euer Pomodoro Timer aus Runde 2 soll um ein neues Feature erweitert werden.
 
 Ihr bekommt gleich eine vorbereitete User Story für ein Feature — genau wie im Alltag, wo die Story meist vom Product Owner kommt und nicht von euch selbst geschrieben wird.
 
@@ -90,11 +90,11 @@ Prüfe meine Story gegen @DoR.md. Erfüllt sie alle Kriterien? Was fehlt noch ko
 |---|---|---|
 | 5 Minuten | Ausgangsstory wählen, eigene DoR ergänzen | Dev-Track |
 | 20 Minuten | Sokratische AI-Session: Annahmen, Risiken und Lücken prüfen; bei Zeit Advocatus Diaboli | Dev-Track |
-| 5 Minuten | Story fertigstellen, gegen die DoR prüfen und als `story.md` für Runde 4 speichern | Dev-Track |
+| 5 Minuten | Story fertigstellen, gegen die DoR prüfen und als `story.md` speichern | Dev-Track |
 
 ### Abschluss
 
-Speichert eure fertige Story als `story.md` in eurem Arbeitsordner — diese verwendet ihr am Nachmittag in Runde 4 mit OpenSpec weiter.
+Speichert eure fertige Story als `story.md` in eurem Arbeitsordner.
 
 ## Übergabe an Runde 4
 

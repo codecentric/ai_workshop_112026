@@ -6,7 +6,7 @@
 
 **Ziel:** Eine DoR-konforme User Story schreiben — durch eigenes Denken + AI als Sparringspartner
 
-**Output:** Eine fertige Story, die ihr am Nachmittag als Input für OpenSpec verwendet
+**Output:** Eine fertige, DoR-geprüfte Story als `story.md` im Arbeitsordner
 
 > **Arbeitsort:** Bleibt in eurem eigenen Arbeitsordner. Dieser enthält
 > bereits die Rohstory `story.md` und das DevOps-`AGENTS.md` aus Runde 2.
@@ -15,7 +15,7 @@
 
 ### Kontext
 
-Ihr schreibt eine Story für einen kleinen DevOps-Prozess aus eurem Alltag — die nehmt ihr am Nachmittag in Runde 4 mit in OpenSpec.
+Ihr verfeinert eure Story für einen kleinen DevOps-Prozess aus eurem Alltag.
 
 **Aber: AI schreibt die Story nicht für euch — auch nicht fertig um.** AI stresstestet sie — bevor ihr anfangt zu bauen.
 
@@ -80,11 +80,11 @@ Prüfe meine Story gegen @DoR.md. Erfüllt sie alle Kriterien? Was fehlt noch ko
 |---|---|---|
 | 5 Minuten | Grobe DevOps-Story aus Runde 2 und eigene DoR vorbereiten | DevOps-Track |
 | 20 Minuten | Sokratische AI-Session: Annahmen, Risiken und Lücken prüfen; bei Zeit Advocatus Diaboli | DevOps-Track |
-| 5 Minuten | Story fertigstellen, gegen die DoR prüfen und als `story.md` für Runde 4 speichern | DevOps-Track |
+| 5 Minuten | Story fertigstellen, gegen die DoR prüfen und als `story.md` speichern | DevOps-Track |
 
 ### Abschluss
 
-Speichert eure fertige Story als `story.md` in eurem Arbeitsordner — diese verwendet ihr am Nachmittag in Runde 4 mit OpenSpec weiter.
+Speichert eure fertige Story als `story.md` in eurem Arbeitsordner.
 
 ## Übergabe an Runde 4
 
