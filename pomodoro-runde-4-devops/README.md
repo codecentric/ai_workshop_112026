@@ -8,26 +8,34 @@
 
 **Input:** Eure `story.md` und euer DevOps-`AGENTS.md` aus dem eigenen Arbeitsordner
 
-**Voraussetzung:** OpenSpec läuft mit eigenen Slash-Commands (`/opsx:...`). Falls hier noch nicht geschehen: OpenSpec einmal installieren mit `npm install -g @fission-ai/openspec@latest` und anschließend im Arbeitsordner `openspec init` ausführen — das installiert die Commands für OpenCode.
+**Voraussetzung:** OpenSpec ist installiert (`openspec --version`, siehe Preflight im [README](../README.md#technischer-preflight)). Falls nicht: `npm install -g @fission-ai/openspec@latest`.
 
 Ihr durchlauft denselben Workflow wie die Dev-Kollegen — aber mit eurem eigenen Use Case.
 
 ## Vor dem Start
 
-Öffnet euren bestehenden DevOps-Arbeitsordner aus Runde 2/3. Er enthält:
+Öffnet euren eigenen Arbeitsordner aus Runde 2/3. Er enthält:
 
 - die in Runde 3 fertiggestellte `story.md`,
-- euer DevOps-`AGENTS.md`,
+- euer DevOps-`AGENTS.md`.
+
+Fehlt etwas, kopiert die fehlenden Dateien aus [`pomodoro-runde-4-devops-workdir/`](../pomodoro-runde-4-devops-workdir/).
 
 Erstellt keinen neuen leeren Ordner. OpenSpec erzeugt die Spezifikation und implementiert anschließend nur so weit,
 wie die Zeit reicht.
 
 
-### Phase 1 — TDD verankern + Explore (15 min)
+### Phase 1 — OpenSpec einrichten + Explore (15 min)
 
-**Schritt 0 — TDD in `config.yaml` verankern (2 min):**
+**Schritt 0 — `openspec init` + TDD in `config.yaml` verankern (2 min):**
 
-`openspec init` hat neben den Commands auch `openspec/config.yaml` angelegt — sie wird bei **jedem** `/opsx:propose` und `/opsx:apply` automatisch mit eingelesen. Ergänzt sie einmalig:
+Führt im Terminal in eurem Arbeitsordner aus:
+
+```bash
+openspec init
+```
+
+Das installiert die `/opsx:...`-Commands für OpenCode (falls sie nicht erscheinen: OpenCode neu starten) und legt `openspec/config.yaml` an — sie wird bei **jedem** `/opsx:propose` und `/opsx:apply` automatisch mit eingelesen. Ergänzt sie einmalig:
 
 ```yaml
 rules:
@@ -70,6 +78,8 @@ Lest das Ergebnis durch: Macht es Sinn? Fehlt etwas?
 
 **TDD-Probe:** Steht in der `tasks.md` vor jedem Feature-Task ein Test-Task? Wenn nein — schärft die Regel in `config.yaml`, statt `tasks.md` einmalig manuell zu korrigieren.
 
+**Schnittstellen-Probe:** Übernehmen `specs/` und `tasks.md` die Schnittstelle aus eurem `AGENTS.md` — Exit-Codes (0 = Erfolg, 1 = Fehler, 2 = ungültige Eingabe) und Ergebnis nach stdout, Diagnose nach stderr? Gibt es dafür Test-Tasks? Wenn nein — sagt es OpenSpec im Chat, bevor ihr mit Apply startet.
+
 ### Phase 3 — Apply (20 min oder Rest)
 
 ```
@@ -80,11 +90,11 @@ OpenSpec arbeitet die tasks.md ab, in TDD-Reihenfolge (Test → rot → Implemen
 
 ### Besondere Beobachtungsaufgabe
 
-Vergleicht Explore bei eurem DevOps-Prozess vs. einem Feature-Request der Dev-Kollegen:
-- Welche anderen Fragen stellt die KI?
-- Wie unterscheidet sich das Proposal von dem eines Dev-Kollegen?
+Notiert während Explore und Propose für den Debrief:
+- Welche Fragen stellt die KI zu eurem DevOps-Prozess, die bei einem Timer-Feature vermutlich nicht kämen?
+- Was steht in eurem Proposal, das bei einem UI-Feature fehlen würde (z. B. Exit-Codes, Fehlerfälle, Betrieb, Sicherheit)?
 
-Teilt eure Beobachtung im Debrief.
+Im Debrief vergleicht ihr eure Beobachtungen mit den Erfahrungen des Dev-Tracks.
 
 ### Was ihr am Ende haben solltet
 
@@ -100,7 +110,7 @@ Teilt eure Beobachtung im Debrief.
 |---|---|---|
 | 2 Minuten | `openspec init` ausführen und TDD-Regeln in `config.yaml` ergänzen | DevOps-Track |
 | 13 Minuten | Vorhandene `story.md` mit `/opsx:explore` klären — noch kein Code | DevOps-Track |
-| 20 Minuten | Mit `/opsx:propose` Change und Aufgabenplan erstellen; TDD-Reihenfolge sowie Exit-Codes und Ausgabekanäle prüfen | DevOps-Track |
+| 20 Minuten | Mit `/opsx:propose` Change und Aufgabenplan erstellen; TDD-Reihenfolge prüfen | DevOps-Track |
 | 20 Minuten | Mit `/opsx:apply` Aufgaben in Test-then-Implementation-Reihenfolge bearbeiten und Beobachtungen für den Vergleich mit dem Dev-Track notieren | DevOps-Track |
 
 ### Debrief

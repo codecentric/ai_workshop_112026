@@ -6,6 +6,9 @@
 
 **Aufgabe:** Wählt mindestens 1, wenn Zeit bleibt 2 der 4 Prompts. Führt erst den schlechten aus — dann eure verbesserte Version. Vergleicht die Ergebnisse.
 
+> **Arbeitsort:** Arbeitet in eurem eigenen Arbeitsordner (siehe [README](../README.md#arbeitsordner)).
+> Kopiert vorher `pomodoro.js` aus [`01-fix-the-prompt-workdir/`](../01-fix-the-prompt-workdir/) hinein — Prompt 3 bezieht sich darauf.
+
 > Tipp: Ihr müsst keinen "perfekten" Prompt schreiben. Schon eine Verbesserung zeigt den Effekt.
 
 ---
@@ -162,11 +165,9 @@ Keine Priorisierung → kein gutes Ergebnis bei einer einzigen davon.
 
 ---
 
----
-
 ## Debrief-Fragen
 
-Drei Minuten pro Person / Paar:
+In Paaren (oder 2–3 Stimmen im Plenum):
 - Welchen Prompt habt ihr gewählt?
 - Was hat sich verändert?
 - **Was hat den größten Unterschied gemacht** — ein Wort, ein Satz, eine Technik?

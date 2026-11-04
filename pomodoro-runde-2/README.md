@@ -5,23 +5,22 @@
 **Ziel:** Erleben, was ein gutes AGENTS.md verändert — Vorher-Nachher-Vergleich mit Runde 1
 
 **Voraussetzung:** Der eigene Arbeitsordner enthält den Timer-Stand aus Runde 1.
-Wer in Runde 1 Option B gewählt hat, übernimmt jetzt einen gemeinsamen Timer-Stand
-von einem Dev-Partner oder verwendet den bereitgestellten Ausgangsstand.
+Wer in Runde 1 Option B gewählt hat oder keinen lauffähigen Stand hat, übernimmt einen
+Timer-Stand von einem Dev-Partner oder kopiert `index.html` aus
+[`pomodoro-runde-2-workdir/`](../pomodoro-runde-2-workdir/) in den eigenen Arbeitsordner.
 
 ---
 
-
 ## Eure Rolle
 
-> **Arbeitsort:** Bleibt in eurem eigenen Arbeitsordner.
+> **Arbeitsort:** Bleibt in eurem eigenen Arbeitsordner (siehe [README](../README.md#arbeitsordner)).
 
 ### Entwickler — AGENTS.md schreiben + nochmal bauen
 
 **Schritt 1 — AGENTS.md erstellen (15 min):**
 
-Startet OpenCode in eurem eigenen Arbeitsordner und führt **im OpenCode-Chat** aus:
+Startet OpenCode in eurem eigenen Arbeitsordner (`opencode` im Terminal) und führt **im OpenCode-Chat** aus:
 ```
-opencode
 /init
 ```
 
@@ -56,8 +55,8 @@ Was fehlt, damit die KI meinen Code-Stil versteht und konsistentere Ergebnisse l
 
 **Schritt 2 — Nochmal bauen (25 min):**
 
-Erstellt darin bei Bedarf einen neuen Branch oder Unterordner, aber behaltet den
-Runde-1-Stand als Vergleich. Baut mit demselben Ziel wie in Runde 1 erneut.
+Sichert den Runde-1-Stand als Vergleich (z. B. per Commit oder als Kopie in einem
+Unterordner `runde-1/`) und baut im Arbeitsordner mit demselben Ziel wie in Runde 1 erneut.
 Beobachtet: Was ist anders? Was muss ich weniger erklären?
 
 **Schritt 3 — Vergleich (5 min):**
@@ -89,7 +88,7 @@ damit [warum?]
 
 Ihr verfeinert sie in der Story-Refinement-Übung vor der Mittagspause (siehe `../pomodoro-runde-3-devops/`).
 
-Speichert die Rohfassung direkt als `story.md` in eurem DevOps-Arbeitsordner.
+Speichert die Rohfassung direkt als `story.md` in eurem eigenen Arbeitsordner.
 Erstellt daneben ein eigenes `AGENTS.md`. Es enthält mindestens:
 
 ```markdown
@@ -125,9 +124,6 @@ Gebt dem Kollegen Feedback: Was würdet ihr ergänzen?
 | 25 Minuten | Runde-1-Use-Case mit dem neuen Kontext erneut bauen | Entwickler |
 | 20 Minuten | AGENTS.md eines Dev-Kollegen reviewen und Feedback geben | DevOps |
 | 5 Minuten | Runde 1 und 2 vergleichen | Entwickler |
-| Parallel zur vorherigen Phase | Gemeinsamer Debrief: Wirkung des Kontexts und fehlende Betriebsaspekte besprechen | alle |
-
----
 
 ---
 
@@ -142,6 +138,7 @@ Gebt dem Kollegen Feedback: Was würdet ihr ergänzen?
 ### Dev
 
 - [ ] Der Timer-Basisstand und `AGENTS.md` liegen im eigenen Arbeitsordner.
+- [ ] Timer-Logik ist vom UI getrennt und `node --test` läuft grün.
 - [ ] Ihr wisst, welche AGENTS-Regel den größten Effekt hatte.
 
 ### DevOps

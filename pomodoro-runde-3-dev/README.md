@@ -1,6 +1,6 @@
 # Übung: Story Refinement + Pomodoro Timer — Runde 3 (Dev-Track)
 
-## Teil 1 — Story Refinement (sokratisch)
+## Story Refinement (sokratisch)
 
 **Dauer:** 30 Minuten
 
@@ -8,9 +8,9 @@
 
 **Output:** Eine fertige Story, die ihr am Nachmittag als Input für OpenSpec verwendet
 
-> **Arbeitsort:** Bleibt in eurem eigenen Dev-Arbeitsordner. Dieser enthält bereits
-> euren Runde-2-Stand (Code und `AGENTS.md`).
-> Prüft das kurz, bevor ihr startet. `DoR.md` kopiert ihr in Phase 1 aus dem Repo-Root hinein.
+> **Arbeitsort:** Bleibt in eurem eigenen Arbeitsordner. Dieser enthält bereits
+> euren Runde-2-Stand (Code und `AGENTS.md`). Prüft das kurz, bevor ihr startet.
+> Fehlt etwas, kopiert die fehlenden Dateien aus [`pomodoro-runde-3-dev-workdir/`](../pomodoro-runde-3-dev-workdir/).
 
 
 ### Kontext
@@ -23,7 +23,7 @@ Ihr bekommt gleich eine vorbereitete User Story für ein Feature — genau wie i
 
 ### Phase 1 — Ausgangspunkt + eigene DoR (5 min)
 
-Kopiert `DoR.md` vom Repo-Root in euren Arbeitsordner und ergänzt unter "Unsere Ergänzungen" 1–2 eigene Kriterien, die euch für euer Feature wichtig sind (z. B. "Keine Annahmen über Browser-Unterstützung" oder "Fehlerfall X ist benannt"). Das ist jetzt *eure* DoR, nicht nur eine vorgegebene Liste.
+Kopiert `DoR.md` vom Repo-Root (liegt auch im Workdir) in euren Arbeitsordner und ergänzt unter "Unsere Ergänzungen" 1–2 eigene Kriterien, die euch für euer Feature wichtig sind (z. B. "Keine Annahmen über Browser-Unterstützung" oder "Fehlerfall X ist benannt"). Das ist jetzt *eure* DoR, nicht nur eine vorgegebene Liste.
 
 Wählt eine der beiden vorbereiteten Stories (wie beim echten PO-Handoff: nicht perfekt, nicht vollständig):
 
@@ -43,7 +43,7 @@ Jetzt kommt AI ins Spiel — aber nicht als Ghostwriter. Ihr führt sie durch ei
 
 **Prompt 1 — Annahmen aufdecken:**
 ```
-Ich habe folgende User Story geschrieben:
+Ich habe folgende User Story bekommen:
 
 [Eure Story hier einfügen]
 

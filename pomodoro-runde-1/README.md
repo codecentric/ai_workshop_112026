@@ -6,7 +6,8 @@
 
 **Kein Zieldruck:** Es geht nicht darum, eine fertige App zu haben. Es geht darum zu erleben, wie sich die Zusammenarbeit mit OpenCode anfühlt.
 
-> **Arbeitsort:** Arbeitet in eurem eigenen persistenten Arbeitsordner.
+> **Arbeitsort:** Arbeitet in eurem eigenen Arbeitsordner (siehe [README](../README.md#arbeitsordner)).
+> [`pomodoro-runde-1-workdir/`](../pomodoro-runde-1-workdir/) ist bewusst leer — ihr startet bei null.
 
 ---
 
@@ -32,9 +33,13 @@ Ihr habt ein kleines, abgrenzbares Problem aus eurem Alltag?
 > Ab Runde 2 arbeitet der Dev-Track mit dem gemeinsamen Pomodoro-Timer weiter,
 > damit `AGENTS.md`, Story Refinement und OpenSpec am gleichen Projekt vergleichbar
 > bleiben. Wer Option B gewählt hat, übernimmt dafür einen Timer-Stand eines
-> Dev-Partners oder den bereitgestellten Ausgangsstand.
+> Dev-Partners oder kopiert `index.html` aus [`pomodoro-runde-2-workdir/`](../pomodoro-runde-2-workdir/).
 
 Sprecht kurz mit dem Trainer, wenn ihr unsicher seid.
+
+**Nebenbei notieren:** Schreibt jede Anweisung mit, die ihr der KI mehr als einmal geben
+müsst (z. B. „keine externen Libraries“, „Kommentare auf Deutsch“, „Logik vom UI trennen“).
+Daraus entsteht in Runde 2 euer `AGENTS.md`.
 
 **Review (10 min):**
 Wechselt in den Plan Mode (Shift+Tab) und **zu einem anderen Modell als dem, mit dem ihr gebaut habt**. Ein zweites Modell hat andere blinde Flecken als das erste.
@@ -84,7 +89,7 @@ Was fehlt? Was könnte besser sein?
 | 45 Minuten | Build Mode — Code generieren, ausprobieren, anpassen | Devs |
 | 45 Minuten | Anforderungen schärfen + Devs begleiten | DevOps |
 | 10 Minuten | Review — Plan Mode, Devs mit anderem Modell als beim Bauen | alle |
-| 5 Minuten | Sichern — Code speichern, wird morgen gebraucht | alle |
+| 5 Minuten | Sichern — Stand im Arbeitsordner sichern, Runde 2 baut darauf auf | alle |
 
 ---
 

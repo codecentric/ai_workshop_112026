@@ -1,6 +1,6 @@
 # Übung: Story Refinement — Runde 3 (DevOps-Track)
 
-## Teil 1 — Story Refinement (sokratisch)
+## Story Refinement (sokratisch)
 
 **Dauer:** 30 Minuten
 
@@ -8,8 +8,9 @@
 
 **Output:** Eine fertige Story, die ihr am Nachmittag als Input für OpenSpec verwendet
 
-> **Arbeitsort:** Bleibt in eurem eigenen DevOps-Arbeitsordner. Dieser enthält
+> **Arbeitsort:** Bleibt in eurem eigenen Arbeitsordner. Dieser enthält
 > bereits die Rohstory `story.md` und das DevOps-`AGENTS.md` aus Runde 2.
+> Fehlt etwas, kopiert die fehlenden Dateien aus [`pomodoro-runde-3-devops-workdir/`](../pomodoro-runde-3-devops-workdir/).
 
 
 ### Kontext
@@ -44,13 +45,13 @@ Liste sie auf — ohne sie zu bewerten.
 **Prompt 2 — Risiken benennen:**
 ```
 Was könnte schiefgehen, wenn wir diese Story genau so implementieren?
-Denk an: technische Risiken, UX-Probleme, Missverständnisse zwischen Entwickler und Auftraggeber.
+Denk an: technische Risiken, Betriebsrisiken (z. B. Fehlalarme, Zugriffsrechte, Secrets), Missverständnisse zwischen Umsetzer und Auftraggeber.
 ```
 → Gibt es Risiken, die ihr noch nicht auf dem Schirm hattet?
 
 **Prompt 3 — Lücken finden:**
 ```
-Was fehlt noch, damit ein Entwickler diese Story ohne Rückfragen umsetzen kann?
+Was fehlt noch, damit diese Story ohne Rückfragen umgesetzt werden kann?
 Beziehe dich auf: fehlende Akzeptanzkriterien, unklar definierte Begriffe, fehlende Edge Cases.
 ```
 → Ergänzt Akzeptanzkriterien auf Basis der Antwort.

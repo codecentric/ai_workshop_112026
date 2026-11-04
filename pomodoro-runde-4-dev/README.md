@@ -8,27 +8,33 @@
 
 **Input:** Der Code, eure `story.md` und `AGENTS.md` aus dem eigenen Arbeitsordner
 
-**Voraussetzung:** OpenSpec läuft mit eigenen Slash-Commands (`/opsx:...`). Falls hier noch nicht geschehen: OpenSpec einmal installieren mit `npm install -g @fission-ai/openspec@latest` und anschließend im Arbeitsordner `openspec init` ausführen — das installiert die Commands für OpenCode.
+**Voraussetzung:** OpenSpec ist installiert (`openspec --version`, siehe Preflight im [README](../README.md#technischer-preflight)). Falls nicht: `npm install -g @fission-ai/openspec@latest`.
 
 ## Vor dem Start
 
-Öffnet euren bestehenden Dev-Arbeitsordner aus Runde 2/3. Er enthält:
+Öffnet euren eigenen Arbeitsordner aus Runde 2/3. Er enthält:
 
 - den Code aus Runde 2,
 - `AGENTS.md`,
 - die in Runde 3 fertiggestellte `story.md`.
 
 Prüft vor dem Start einmal die Tests (z. B. `node --test`): Sie müssen grün laufen, sonst
-hat TDD in Phase 3 keine Basis. Fehlt die Struktur, bittet den Trainer um den
-bereitgestellten Ausgangsstand.
+hat TDD in Phase 3 keine Basis. Fehlt etwas oder sind die Tests rot, kopiert die
+fehlenden Dateien aus [`pomodoro-runde-4-dev-workdir/`](../pomodoro-runde-4-dev-workdir/).
 
 Erstellt keinen neuen leeren Ordner. OpenSpec erweitert den vorhandenen Projektstand.
 
-### Phase 1 — TDD verankern + Explore (15 min)
+### Phase 1 — OpenSpec einrichten + Explore (15 min)
 
-**Schritt 0 — TDD in `config.yaml` verankern (2 min):**
+**Schritt 0 — `openspec init` + TDD in `config.yaml` verankern (2 min):**
 
-`openspec init` hat neben den Commands auch `openspec/config.yaml` angelegt — sie wird bei **jedem** `/opsx:propose` und `/opsx:apply` automatisch mit eingelesen. Ergänzt sie einmalig:
+Führt im Terminal in eurem Arbeitsordner aus:
+
+```bash
+openspec init
+```
+
+Das installiert die `/opsx:...`-Commands für OpenCode (falls sie nicht erscheinen: OpenCode neu starten) und legt `openspec/config.yaml` an — sie wird bei **jedem** `/opsx:propose` und `/opsx:apply` automatisch mit eingelesen. Ergänzt sie einmalig:
 
 ```yaml
 rules:
