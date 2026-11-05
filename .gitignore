@@ -1,4 +1,8 @@
 node_modules/
+dist
+coverage
 .opencode/
+.vite
 example/
 UEBUNGEN-UEBERSICHT.md
+.idea/
