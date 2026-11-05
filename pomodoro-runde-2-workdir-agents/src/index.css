@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #292440; background: #f7f7fb; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button { font: inherit; }
+button:focus-visible { outline: 3px solid #292440; outline-offset: 3px; }
+.app-shell { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+.timer-card { width: min(100%, 510px); border: 1px solid #e5e3ee; border-top: 6px solid var(--accent); border-radius: 24px; padding: 28px 20px; background: #fff; box-shadow: 0 20px 50px rgba(40, 36, 64, .1); }
+.eyebrow { margin: 0 0 6px; color: #706b82; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(1.55rem, 5vw, 2rem); }
+.mode-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 28px 0; padding: 5px; border-radius: 14px; background: #f2f1f6; }
+.mode-button { min-height: 48px; padding: 7px 5px; border: 0; border-radius: 10px; color: #615c72; background: transparent; font-size: .78rem; font-weight: 700; cursor: pointer; }
+.mode-button[aria-pressed='true'] { color: #fff; background: var(--accent); box-shadow: 0 3px 8px color-mix(in srgb, var(--accent), transparent 65%); }
+.timer-display { margin: 12px 0 8px; color: #292440; font-size: clamp(4.8rem, 20vw, 7.4rem); font-variant-numeric: tabular-nums; font-weight: 750; letter-spacing: -.07em; line-height: 1; text-align: center; }
+.status { min-height: 26px; margin: 0; color: #706b82; text-align: center; }
+.status.complete { color: var(--accent); font-weight: 700; }
+.controls { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 25px 0 30px; }
+.primary-button, .secondary-button { min-height: 53px; border-radius: 14px; font-weight: 750; cursor: pointer; }
+.primary-button { border: 0; color: white; background: var(--accent); }
+.primary-button:hover { filter: brightness(.95); }
+.secondary-button { min-width: 53px; border: 1px solid #dedbe8; color: #4f4a60; background: white; }
+.secondary-button:hover { background: #f7f6fa; }
+.progress { border-top: 1px solid #eceaf1; padding-top: 23px; text-align: center; }
+.progress h2 { margin: 0; font-size: .92rem; }
+.progress p { margin: 5px 0 14px; color: #706b82; font-size: .85rem; }
+.dots { display: flex; justify-content: center; gap: 10px; }
+.dot { width: 13px; height: 13px; border: 2px solid var(--accent); border-radius: 50%; }
+.dot.completed { background: var(--accent); }
+@media (min-width: 500px) { .timer-card { padding: 36px; } .mode-button { font-size: .9rem; } }
